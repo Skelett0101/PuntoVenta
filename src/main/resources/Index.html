@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Abarrotera PRO</title>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+
+    <header class="admin-nav">
+        <div class="nav-content">
+            <div class="brand">
+                <i class="ph-bold ph-storefront"></i>
+                <span>Abarrotera<b>PRO</b></span>
+            </div>
+            <nav>
+                <a href="dashboard.html" class="active">Graficas</a>
+                <a href="Productos.html">Productos</a>
+                <a href="lotes.html">Lotes & Caducidad</a>
+                <a href="ventas.html">Ventas</a>
+            </nav>
+            <div class="user-profile">
+                <span>Admin</span>
+                <i class="ph-fill ph-user-circle"></i>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="section-header">
+            <h1>Panel de Control</h1>
+            <p class="subtitle">Resumen operativo del inventario y ventas al día de hoy.</p>
+        </div>
+
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-icon"><i class="ph ph-money"></i></div>
+                <div class="kpi-info">
+                    <h3>Ventas Hoy</h3>
+                    <p class="number">$4,500.00</p>
+                </div>
+            </div>
+            <div class="kpi-card alert-danger">
+                <div class="kpi-icon"><i class="ph ph-warning-octagon"></i></div>
+                <div class="kpi-info">
+                    <h3>Lotes Vencidos</h3>
+                    <p class="number">3</p>
+                </div>
+            </div>
+            <div class="kpi-card alert-warning">
+                <div class="kpi-icon"><i class="ph ph-package"></i></div>
+                <div class="kpi-info">
+                    <h3>Stock Bajo</h3>
+                    <p class="number">8</p>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon"><i class="ph ph-users-three"></i></div>
+                <div class="kpi-info">
+                    <h3>Vendedores</h3>
+                    <p class="number">4</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-grid">
+            
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="ph ph-chart-line"></i> Frecuencia de Ventas Mensual</h3>
+                </div>
+                <div class="chart-placeholder">
+                    <p>Cargando gráfica de rendimiento...</p>
+                    </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="ph ph-bell-ringing"></i> Alertas de Caducidad</h3>
+                </div>
+                <table class="alert-table">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Lote</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <b>Leche Entera 1L</b><br>
+                                <small>Lala</small>
+                            </td>
+                            <td>LOT-458</td>
+                            <td><span class="status-badge danger">CADUCADO</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Pan de Caja</b><br>
+                                <small>Bimbo</small>
+                            </td>
+                            <td>LOT-122</td>
+                            <td><span class="status-badge warning">3 DÍAS</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Jamón de Pavo</b><br>
+                                <small>Zwan</small>
+                            </td>
+                            <td>LOT-902</td>
+                            <td><span class="status-badge warning">HOY VENCE</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="js/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Lotes | Abarrotera PRO</title>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+
+    <header class="admin-nav">
+        <div class="nav-content">
+            <div class="brand">
+                <i class="ph-bold ph-storefront"></i>
+                <span>Abarrotera<b>PRO</b></span>
+            </div>
+            <nav>
+                <a href="index.html">Dashboard</a>
+                <a href="productos.html">Productos</a>
+                <a href="lotes.html" class="active">Lotes & Caducidad</a>
+                <a href="ventas.html">Punto de Venta</a>
+            </nav>
+            <div class="user-profile">
+                <span>Admin</span>
+                <i class="ph-fill ph-user-circle"></i>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="page-header">
+            <div>
+                <h1>Control de Lotes</h1>
+                <p>Registra la entrada de productos y gestiona sus fechas de vencimiento.</p>
+            </div>
+        </div>
+
+        <div class="admin-grid">
+            <aside class="card">
+                <h3><i class="ph ph-truck-loading"></i> Entrada de Lote</h3>
+                <form id="form-lote" class="mt-20">
+                    
+                    <div class="form-group">
+                        <label for="producto">Producto</label>
+                        <select id="producto" class="form-control" required>
+                            <option value="">Seleccionar producto...</option>
+                            <option value="1">Aceite Vegetal 1L - Nutrioli</option>
+                            <option value="2">Arroz Blanco 1kg - Verde Valle</option>
+                            <option value="3">Leche Entera 1L - Lala</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="codigo_lote">Código de Lote / ID</label>
+                        <input type="text" id="codigo_lote" class="form-control" placeholder="Ej. L-99234" required>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="fecha_ingreso">Fecha Ingreso</label>
+                            <input type="date" id="fecha_ingreso" class="form-control" value="2026-03-27">
+                        </div>
+                        <div class="form-group">
+                            <label for="stock_lote">Cantidad (Stock)</label>
+                            <input type="number" id="stock_lote" class="form-control highlight" placeholder="0" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group alert-field">
+                        <label for="fecha_caducidad"><i class="ph-bold ph-calendar-x"></i> Fecha de Caducidad</label>
+                        <input type="date" id="fecha_caducidad" class="form-control" required>
+                        <small>El sistema usará esta fecha para las alertas del Dashboard.</small>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <i class="ph ph-package"></i> Registrar Entrada
+                    </button>
+                </form>
+            </aside>
+
+            <section class="card no-padding overflow-hidden">
+                <div class="table-actions">
+                    <div class="search-box">
+                        <i class="ph ph-magnifying-glass"></i>
+                        <input type="text" placeholder="Buscar por código de lote...">
+                    </div>
+                </div>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Lote</th>
+                            <th>Vencimiento</th>
+                            <th>Stock Actual</th>
+                            <th class="text-right">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="prod-info">
+                                    <span class="name">Leche Entera 1L</span>
+                                    <span class="brand">Lala</span>
+                                </div>
+                            </td>
+                            <td><code class="lote-tag">LAL-2026-A</code></td>
+                            <td><span class="status-pill warning">30/Mar/2026</span></td>
+                            <td><b>24 Unidades</b></td>
+                            <td class="text-right">
+                                <div class="action-btns">
+                                    <button class="btn-action edit"><i class="ph ph-pencil-simple"></i></button>
+                                    <button class="btn-action delete"><i class="ph ph-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="prod-info">
+                                    <span class="name">Aceite Vegetal</span>
+                                    <span class="brand">Nutrioli</span>
+                                </div>
+                            </td>
+                            <td><code class="lote-tag">NUT-B22</code></td>
+                            <td><span class="status-pill success">15/Dic/2027</span></td>
+                            <td><b>150 Unidades</b></td>
+                            <td class="text-right">
+                                <div class="action-btns">
+                                    <button class="btn-action edit"><i class="ph ph-pencil-simple"></i></button>
+                                    <button class="btn-action delete"><i class="ph ph-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </main>
+
+    <script src="js/lotes.js"></script>
+</body>
+</html>
