@@ -1,0 +1,59 @@
+package com.mx.ubam.model;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "usuario")
+public class Usuario {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_usuario")
+    private Long idUsuario;
+
+    @Column(name = "nombre_usuario", length = 100, nullable = false)
+    private String nombreUsuario;
+
+    @Column(name = "correo_usuario", length = 150, unique = true, nullable = false)
+    private String correoUsuario;
+    
+    @Column(name = "contrasena_usuario")
+    private String contrasenaUsuario;
+    
+    public Usuario() {}
+    
+    //Getters and setters
+
+	public Long getIdUsuario() {
+		return idUsuario;
+	}
+
+	public void setIdUsuario(Long idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+
+	public String getNombreUsuario() {
+		return nombreUsuario;
+	}
+
+	public void setNombreUsuario(String nombreUsuario) {
+		this.nombreUsuario = nombreUsuario;
+	}
+
+	public String getCorreoUsuario() {
+		return correoUsuario;
+	}
+
+	public void setCorreoUsuario(String correoUsuario) {
+		this.correoUsuario = correoUsuario;
+	}
+
+	public String getContrasenaUsuario() {
+		return contrasenaUsuario;
+	}
+
+	public void setContrasenaUsuario(String contrasenaUsuario) {
+		this.contrasenaUsuario = contrasenaUsuario;
+	}
+
+}

@@ -19,5 +19,7 @@ public class Venta {
 		this.id_Venta = id_Venta;
 	}
 	
+	public Venta() {}
+	
 
 }
