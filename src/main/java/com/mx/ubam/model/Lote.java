@@ -30,6 +30,9 @@ public class Lote {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaCaducidad;
     
+    @Column(name = "stock_lote", nullable = false)
+    private Long stockLote;
+    
     public Lote() {}
 
 	public Long getIdLote() {
