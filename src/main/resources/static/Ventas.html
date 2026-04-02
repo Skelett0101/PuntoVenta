@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Punto de Venta | Abarrotera PRO</title>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/admin_style.css">
+    <link rel="stylesheet" href="css/ventas.css">
+</head>
+<body>
+
+    <header class="admin-nav">
+        <div class="nav-content">
+            <div class="brand">
+                <i class="ph-bold ph-storefront"></i>
+                <span>Abarrotera<b>PRO</b></span>
+            </div>
+            <nav>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="gestion_productos.html">Productos</a>
+                <a href="lotes.html">Lotes & Caducidad</a>
+                <a href="ventas.html" class="active">Punto de Venta</a>
+            </nav>
+            <div class="user-profile">
+                <span>Admin</span>
+                <i class="ph-fill ph-user-circle"></i>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="page-header">
+            <div>
+                <h1>Registrar Nueva Venta</h1>
+                <p>Gestión de transacciones y salida de mercancía.</p>
+            </div>
+        </div>
+
+        <div class="admin-grid">
+            <aside class="card">
+                <h3><i class="ph ph-receipt"></i> Formulario de Venta</h3>
+                <form id="form-venta" class="mt-20">
+                    <div class="form-group">
+                        <label for="id_Venta">Folio de Venta</label>
+                        <input type="number" id="id_Venta" name="id_Venta" class="form-control" placeholder="Ej. 1001" required>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="id_usuario">ID Usuario</label>
+                            <input type="number" id="id_usuario" name="id_usuario" class="form-control" value="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nombreVenta">Nombre / Concepto</label>
+                            <input type="text" id="nombreVenta" name="nombreVenta" class="form-control" placeholder="Venta General" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="fecha">Fecha</label>
+                            <input type="date" id="fecha" name="fecha" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="hora_venta">Hora</label>
+                            <input type="time" id="hora_venta" name="hora_venta" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="subtotal">Subtotal</label>
+                            <input type="number" step="0.01" id="subtotal" name="subtotal" class="form-control" placeholder="0.00" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="total">Total</label>
+                            <input type="number" step="0.01" id="total" name="total" class="form-control highlight" placeholder="0.00" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary btn-block">
+                        <i class="ph ph-hand-coins"></i> Finalizar Transacción
+                    </button>
+                </form>
+                <div id="status-msg" class="status-box"></div>
+            </aside>
+
+            <section class="card no-padding overflow-hidden">
+                <div class="table-actions">
+                    <h3><i class="ph ph-history"></i> Historial Reciente</h3>
+                </div>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Folio</th>
+                            <th>Concepto</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-ventas-recientes">
+                        <tr>
+                            <td>#000</td>
+                            <td>Esperando registros...</td>
+                            <td>$0.00</td>
+                            <td><span class="status-pill warning">Pendiente</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </main>
+
+    <script src="js/ventas.js"></script>
+</body>
+</html>
