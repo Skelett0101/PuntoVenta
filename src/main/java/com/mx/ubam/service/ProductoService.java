@@ -36,4 +36,17 @@ public class ProductoService {
 
         return null;
     }
+    
+    public Producto eliminar(Integer id) {
+    	
+    	//Buscar el producto en bd
+        Producto producto = repo.findById(id)
+            .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + id));
+        
+        repo.delete(producto);
+        
+        return producto;
+    }
+    	
+    
 }

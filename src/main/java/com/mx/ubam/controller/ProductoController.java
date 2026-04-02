@@ -25,4 +25,12 @@ public class ProductoController {
     public Producto editarProducto(@PathVariable Integer id, @RequestBody Producto producto) {
         return service.editar(id, producto);
     }
+    
+    //Eliminar Producto
+    @DeleteMapping("/{id}")
+    public Producto eliminarProducto(@PathVariable Integer id) {
+    	return service.eliminar(id);
+    	
+    }
+    
 }
