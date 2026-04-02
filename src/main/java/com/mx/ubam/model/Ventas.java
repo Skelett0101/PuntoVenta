@@ -20,6 +20,7 @@ public class Ventas {
     private String nombreVenta;
 
     // --- LLAVE FORÁNEA
+    @ManyToOne
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
 

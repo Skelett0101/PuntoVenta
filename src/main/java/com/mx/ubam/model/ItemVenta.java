@@ -14,7 +14,7 @@ public class ItemVenta {
     // --- RELACIÓN CON LA VENTA (Llave Foránea) ---
     @ManyToOne
     @JoinColumn(name = "id_venta", nullable = false)
-    private Venta venta;
+    private Ventas venta;
 
     // --- RELACIÓN CON EL PRODUCTO (Llave Foránea) ---
     @ManyToOne
@@ -33,4 +33,47 @@ public class ItemVenta {
     public ItemVenta() {
     	
     }
+
+	public Long getIdItemVenta() {
+		return idItemVenta;
+	}
+
+	public void setIdItemVenta(Long idItemVenta) {
+		this.idItemVenta = idItemVenta;
+	}
+
+	public Ventas getVenta() {
+		return venta;
+	}
+
+	public void setVenta(Ventas venta) {
+		this.venta = venta;
+	}
+
+	public Producto getProducto() {
+		return producto;
+	}
+
+	public void setProducto(Producto producto) {
+		this.producto = producto;
+	}
+
+	public Lote getLote() {
+		return lote;
+	}
+
+	public void setLote(Lote lote) {
+		this.lote = lote;
+	}
+
+	public Integer getCantidadVendida() {
+		return cantidadVendida;
+	}
+
+	public void setCantidadVendida(Integer cantidadVendida) {
+		this.cantidadVendida = cantidadVendida;
+	}
+    
+    
+    
 }
