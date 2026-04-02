@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.mx.ubam.model.Producto;
 import com.mx.ubam.repository.ProductoRepository;
-
+import java.util.List;
 @Service
 public class ProductoService {
 
@@ -46,6 +46,10 @@ public class ProductoService {
         repo.delete(producto);
         
         return producto;
+    }
+    
+    public List<Producto> listar() {
+        return repo.findAll();
     }
     	
     

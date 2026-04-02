@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.mx.ubam.model.Producto;
 import com.mx.ubam.service.ProductoService;
-
+import java.util.List;
 @RestController
 @RequestMapping("/api/productos")
 @CrossOrigin
@@ -31,6 +31,12 @@ public class ProductoController {
     public Producto eliminarProducto(@PathVariable Integer id) {
     	return service.eliminar(id);
     	
+    }
+    
+    //List Producto
+    @GetMapping
+    public List<Producto> listarProductos() {
+        return service.listar();
     }
     
 }
