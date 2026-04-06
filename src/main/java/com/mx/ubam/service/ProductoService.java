@@ -37,6 +37,12 @@ public class ProductoService {
         return null;
     }
     
+    
+ // 🔹 BUSCAR UN SOLO PRODUCTO POR ID (Para el modal)
+    public Producto buscarPorId(Integer id) {
+        return repo.findById(id).orElse(null);
+    }
+    
     public Producto eliminar(Integer id) {
     	
     	//Buscar el producto en bd

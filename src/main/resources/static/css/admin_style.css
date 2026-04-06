@@ -276,3 +276,82 @@ td {
     color: var(--danger);
     border-color: var(--danger);
 }
+
+
+
+
+
+
+/* =========================================
+   ESTILOS DE LA VENTANA EMERGENTE (MODAL)
+   ========================================= */
+
+/* El fondo oscuro que cubre toda la pantalla */
+.modal-overlay {
+    position: fixed; /* Esto hace que flote sobre toda la página */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6); /* Fondo negro semitransparente */
+    z-index: 9999; /* Asegura que esté por encima del menú y la tabla */
+    display: flex;
+    justify-content: center; /* Centra la cajita horizontalmente */
+    align-items: center; /* Centra la cajita verticalmente */
+}
+
+/* La cajita blanca del formulario */
+.modal-content {
+    background: #ffffff;
+    padding: 25px 30px;
+    border-radius: 12px; /* Bordes redondeados */
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Sombra elegante */
+    position: relative;
+    animation: saltito 0.3s ease-out; /* Animación de entrada */
+}
+
+/* Animación para que aparezca suavemente */
+@keyframes saltito {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- CABECERA Y BOTÓN DE CERRAR (X) --- */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border, #e2e8f0);
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: #1e293b;
+}
+
+/* El diseño del botón feo transformado */
+.btn-close {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    color: #94a3b8; /* Color gris suave */
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+/* Efecto al pasar el mouse sobre la X */
+.btn-close:hover {
+    color: #ef4444; /* Se pinta rojo */
+    background-color: #fee2e2; /* Fondo rojito claro */
+    transform: scale(1.1); /* Crece un poquito */
+}

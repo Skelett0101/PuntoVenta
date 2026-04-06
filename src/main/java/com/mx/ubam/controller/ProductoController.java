@@ -39,4 +39,10 @@ public class ProductoController {
         return service.listar();
     }
     
+ // 🔹 OBTENER UN PRODUCTO POR ID
+    @GetMapping("/{id}")
+    public Producto obtenerProductoPorId(@PathVariable Integer id) {
+        return service.buscarPorId(id);
+    }
+    
 }
