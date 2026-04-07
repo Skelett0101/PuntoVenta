@@ -3,6 +3,7 @@ package com.mx.ubam.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.mx.ubam.dto.CheckoutRequest;
 import com.mx.ubam.model.Producto;
 import com.mx.ubam.service.ProductoService;
 import java.util.List;
@@ -43,6 +44,18 @@ public class ProductoController {
     @GetMapping("/{id}")
     public Producto obtenerProductoPorId(@PathVariable Integer id) {
         return service.buscarPorId(id);
+    }
+
+    //productos mas
+    @GetMapping("/mas/top")
+    public List<CheckoutRequest> getTopSelling() {
+        return service.obtenerMasVendidos();
+    }
+
+    //productos menos top en la tienda
+    @GetMapping("/menos/low")
+    public List<CheckoutRequest> getLowSelling() {
+        return service.obtenerMenosVendidos();
     }
     
 }

@@ -3,11 +3,29 @@ package com.mx.ubam.dto;
 public class CheckoutRequest {
 	
 	// IDs Principales
-    private Long id_Venta;
-    private Long id_usuario;
-    private Long id_lote;
-    private Long id_producto;
-    private Long id_item_venta;
-    
+	private String nombre;
+    private Long total;
+   
+    public CheckoutRequest(String nombre, Long total) {
+        this.nombre = nombre;
+        this.total = total;
+    }
 
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public Long getTotal() {
+		return total;
+	}
+
+	public void setTotal(Long total) {
+		this.total = total;
+	}
+    
+    
 }

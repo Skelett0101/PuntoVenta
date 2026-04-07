@@ -35,6 +35,10 @@ public class Lote {
     
     public Lote() {}
 
+    
+  //GETTERS Y SETTERS
+    
+    
 	public Long getIdLote() {
 		return idLote;
 	}
@@ -74,8 +78,18 @@ public class Lote {
 	public void setFechaCaducidad(LocalDate fechaCaducidad) {
 		this.fechaCaducidad = fechaCaducidad;
 	}
+
+
+	public Long getStockLote() {
+		return stockLote;
+	}
+
+
+	public void setStockLote(Long stockLote) {
+		this.stockLote = stockLote;
+	}
     
-    //GETTERS Y SETTERS
+    
     
     
     
