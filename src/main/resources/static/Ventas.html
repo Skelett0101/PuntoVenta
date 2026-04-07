@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -45,27 +46,12 @@ border-bottom:3px solid #2c7be5;
 
 </head>
 
+
 <body>
 
-    <header class="admin-nav">
-        <div class="nav-content">
-            <div class="brand">
-                <i class="ph-bold ph-storefront"></i>
-                <span>Abarrotera<b>PRO</b></span>
-            </div>
-            <nav>
-                <a href="Index.html" class="active">Graficas</a>
-                <a href="Productos.html">Productos</a>
-                <a href="lotes.html">Lotes & Caducidad</a>
-                <a href="Ventas.html">Ventas</a>
-            </nav>
-            <div class="user-profile">
-                <span>Admin</span>
-                <i class="ph-fill ph-user-circle"></i>
-            </div>
-        </div>
-    </header>
+<!-- NAVBAR COPIADA EXACTAMENTE DEL DASHBOARD -->
 
+<header class="admin-nav">
 
 <div class="nav-content">
 
@@ -75,10 +61,15 @@ border-bottom:3px solid #2c7be5;
 </div>
 
 <nav>
-<a href="dashboard.html">Dashboard</a>
-<a href="gestion_productos.html">Productos</a>
+
+<a href="Index.html">Graficas</a>
+
+<a href="Productos.html">Productos</a>
+
 <a href="lotes.html">Lotes & Caducidad</a>
-<a href="ventas.html" class="active">Punto de Venta</a>
+
+<a href="Ventas.html" class="active">Ventas</a>
+
 </nav>
 
 <div class="user-profile">
@@ -103,9 +94,7 @@ border-bottom:3px solid #2c7be5;
 </div>
 
 
-
 <div class="admin-grid">
-
 
 
 <!-- PANEL IZQUIERDO -->
@@ -146,7 +135,6 @@ border-bottom:3px solid #2c7be5;
 </div>
 
 
-
 <div class="row">
 
 <div class="form-group">
@@ -160,7 +148,6 @@ border-bottom:3px solid #2c7be5;
 </div>
 
 </div>
-
 
 
 <div class="row">
@@ -194,7 +181,6 @@ Finalizar Venta
 
 
 
-
 <!-- PANEL DERECHO -->
 
 <section class="card no-padding overflow-hidden">
@@ -203,15 +189,11 @@ Finalizar Venta
 <div class="tabs">
 
 <button class="tab-btn active" onclick="mostrarTab('historial')">
-
 <i class="ph ph-history"></i> Historial
-
 </button>
 
 <button class="tab-btn" onclick="mostrarTab('categorias')">
-
 <i class="ph ph-squares-four"></i> Categorías
-
 </button>
 
 </div>
@@ -243,9 +225,7 @@ Finalizar Venta
 <tr>
 
 <td colspan="4" style="text-align:center;padding:20px;color:#666">
-
 Esperando registros...
-
 </td>
 
 </tr>
@@ -303,9 +283,7 @@ Esperando registros...
 <tr>
 
 <td colspan="4" style="text-align:center;padding:20px;color:#666">
-
 Seleccione una categoría
-
 </td>
 
 </tr>
@@ -314,17 +292,15 @@ Seleccione una categoría
 
 </table>
 
-
 </div>
 
 
 </section>
 
-
-
 </div>
 
 </main>
+
 
 <script src="js/ventas.js"></script>
 
