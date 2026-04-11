@@ -21,7 +21,7 @@ import com.mx.ubam.model.*;
 public class VentaService {
 
     @PersistenceContext
-    private EntityManager entityManager; // JPA puro
+    private EntityManager entityManager;
 
     @Autowired private VentaRepository ventaRepo;
     @Autowired private LoteRepository loteRepo;
@@ -29,51 +29,62 @@ public class VentaService {
 
     @Transactional
     public Ventas procesarVenta(VentaRequest dto) {
+        // 1. Instanciamos la Venta base
         Ventas venta = new Ventas();
-        
-        // Obtenemos una referencia al usuario sin usar Repository
         Usuario usuario = entityManager.getReference(Usuario.class, dto.getIdUsuario());
         venta.setUsuario(usuario);
-        
-        venta.setNombreVenta(dto.getNombreVenta());
+        venta.setNombreVenta(dto.getNombreVenta() != null ? dto.getNombreVenta() : "Venta General");
         venta.setFecha(LocalDate.now());
         venta.setHoraVenta(LocalTime.now());
 
+        // 2. Registramos la venta para obtener el ID (Evita TransientPropertyValueException)
+        Ventas ventaGuardada = ventaRepo.save(venta); 
+
         BigDecimal subtotalAcumulado = BigDecimal.ZERO;
 
-     // Dentro del bucle for de procesarVenta en VentaService.java
+        // --- UN SOLO BUCLE PARA TODO ---
         for (VentaRequest.ItemDetalleDTO itemDto : dto.getItems()) {
-            
-            // 🔥 CAMBIO AQUÍ: Usamos el nuevo método del repositorio
-            List<Lote> lotes = loteRepo.buscarLotesDisponiblesPEPS(itemDto.getIdProducto());
+            Integer idPro = itemDto.getIdProducto();
+            System.out.println(">>> Procesando Producto ID: " + idPro);
+
+            // Buscar lotes con stock usando PEPS
+            List<Lote> lotes = loteRepo.buscarLotesDisponiblesPEPS(idPro);
+            System.out.println(">>> Lotes encontrados: " + lotes.size());
 
             if (lotes.isEmpty()) {
-                throw new RuntimeException("Sin existencias para el producto ID: " + itemDto.getIdProducto());
+                throw new RuntimeException("Sin stock para el ID: " + idPro);
             }
-            
-            // El resto del código sigue igual...
-            Lote lote = lotes.get(0);
-            
-            // Hibernate gestiona el estado "Dirty" y hará el Update al terminar
-            lote.setStockLote(lote.getStockLote() - itemDto.getCantidad());
 
+            Lote lote = lotes.get(0);
+
+            // Validar que el lote tenga lo suficiente
+            if (lote.getStockLote() < itemDto.getCantidad()) {
+                throw new RuntimeException("Stock insuficiente en lote " + lote.getCodigoLote());
+            }
+
+            // Descontar stock y guardar lote actualizado
+            lote.setStockLote(lote.getStockLote() - itemDto.getCantidad());
+            loteRepo.save(lote);
+
+            // 3. Crear el detalle de la venta
             ItemVenta detalle = new ItemVenta();
-            detalle.setVenta(venta);
+            detalle.setVenta(ventaGuardada);
             detalle.setProducto(lote.getProducto());
             detalle.setLote(lote);
             detalle.setCantidadVendida(itemDto.getCantidad());
             
-            // Cálculo de precios
+            // Calcular montos
             BigDecimal precio = lote.getProducto().getPrecio_venta();
             subtotalAcumulado = subtotalAcumulado.add(precio.multiply(new BigDecimal(itemDto.getCantidad())));
             
             itemRepo.save(detalle);
         }
 
-        venta.setSubtotal(subtotalAcumulado);
-        venta.setIva(subtotalAcumulado.multiply(new BigDecimal("0.16")));
-        venta.setTotal(subtotalAcumulado.add(venta.getIva()));
-
-        return ventaRepo.save(venta);
+        // 4. Actualizar totales finales
+        ventaGuardada.setSubtotal(subtotalAcumulado);
+        ventaGuardada.setIva(subtotalAcumulado.multiply(new BigDecimal("0.16")));
+        ventaGuardada.setTotal(subtotalAcumulado.add(ventaGuardada.getIva()));
+        
+        return ventaRepo.save(ventaGuardada);
     }
 }

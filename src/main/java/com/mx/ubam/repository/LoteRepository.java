@@ -10,10 +10,8 @@ import java.util.List;
 @Repository
 public interface LoteRepository extends JpaRepository<Lote, Long> {
 
-    // Usamos JPQL para ignorar los problemas de nombres automáticos de Spring
-    @Query("SELECT l FROM Lote l WHERE l.producto.id_producto = :id AND l.stockLote > 0 ORDER BY l.fechaIngreso ASC")
-    List<Lote> buscarLotesDisponiblesPEPS(@Param("id") Integer id);
+	@Query("SELECT l FROM Lote l WHERE l.producto.id_producto = :id_producto AND l.stockLote > 0 ORDER BY l.fechaIngreso ASC")
+    List<Lote> buscarLotesDisponiblesPEPS(@Param("id_producto") Integer id_producto);
 
     List<Lote> findByStockLoteLessThanOrderByStockLoteAsc(Long threshold);
-    List<Lote> findByFechaCaducidadBefore(java.time.LocalDate fecha);
 }
