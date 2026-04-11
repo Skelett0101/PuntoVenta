@@ -58,4 +58,9 @@ public class ProductoController {
         return service.obtenerMenosVendidos();
     }
     
+ // 🔹 BUSCAR POR CATEGORÍA
+    @GetMapping("/categoria/{nombre}")
+    public List<Producto> listarPorCategoria(@PathVariable String nombre) {
+        return service.listarPorCategoria(nombre);
+    }
 }

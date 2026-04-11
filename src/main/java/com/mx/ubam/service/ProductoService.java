@@ -87,4 +87,10 @@ public class ProductoService {
                 .toList();
     }
     
+ // En ProductoService.java
+    public List<Producto> listarPorCategoria(String categoria) {
+        return repo.findByCategoria(categoria);
+    }
+    
+    
 }
