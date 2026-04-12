@@ -1,8 +1,10 @@
 package com.mx.ubam.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import com.mx.ubam.service.*;
@@ -41,6 +43,17 @@ public class VentaController {
         	
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                  .body("Ocurrió un error inesperado al procesar la venta.");
+        }
+    }
+    
+    @GetMapping("/filtrar")
+    public ResponseEntity<List<Ventas>> filtrarPorFecha(
+            @RequestParam("fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) {
+        try {
+            List<Ventas> ventas = ventaService.listarPorFecha(fecha);
+            return new ResponseEntity<>(ventas, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 }

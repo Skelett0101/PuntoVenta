@@ -14,4 +14,7 @@ public interface LoteRepository extends JpaRepository<Lote, Long> {
     List<Lote> buscarLotesDisponiblesPEPS(@Param("id_producto") Integer id_producto);
 
     List<Lote> findByStockLoteLessThanOrderByStockLoteAsc(Long threshold);
+    
+    // Buscar lotes por fecha de caducidad
+    List<Lote> findByFechaCaducidad(java.time.LocalDate fechaCaducidad);
 }

@@ -87,4 +87,10 @@ public class VentaService {
         
         return ventaRepo.save(ventaGuardada);
     }
+    
+    
+    //filtrar por fecha
+    public List<Ventas> listarPorFecha(LocalDate fecha) {
+        return ventaRepo.findByFecha(fecha);
+    }
 }
