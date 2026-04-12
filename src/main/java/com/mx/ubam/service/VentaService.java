@@ -1,5 +1,10 @@
 package com.mx.ubam.service;
-
+import com.mx.ubam.repository.VentaRepository;
+import com.mx.ubam.repository.LoteRepository;
+import com.mx.ubam.repository.ItemVentaRepository;
+import com.mx.ubam.repository.VentaRepository;
+import com.mx.ubam.repository.LoteRepository;
+import com.mx.ubam.repository.ItemVentaRepository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -92,5 +97,19 @@ public class VentaService {
     //filtrar por fecha
     public List<Ventas> listarPorFecha(LocalDate fecha) {
         return ventaRepo.findByFecha(fecha);
+    }
+ // Dentro de VentaService.java
+ // ... (Mantén tu código anterior de procesarVenta y listarPorFecha) ...
+
+    // --- MÉTODOS PARA LAS GRÁFICAS CORREGIDOS ---
+    
+    public List<Object[]> obtenerFrecuenciaVentas() {
+        // ERROR ANTERIOR: Usabas 'ventaRepository', pero tu variable se llama 'ventaRepo'
+        return ventaRepo.contarVentasPorDia();
+    }
+
+    public List<Object[]> obtenerIngresosDiarios() {
+        // ERROR ANTERIOR: Usabas 'ventaRepository', pero tu variable se llama 'ventaRepo'
+        return ventaRepo.sumarIngresosPorDia();
     }
 }

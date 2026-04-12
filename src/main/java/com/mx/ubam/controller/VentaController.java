@@ -56,4 +56,26 @@ public class VentaController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+ // --- NUEVOS MÉTODOS PARA LAS GRÁFICAS ---
+
+    @GetMapping("/frecuencia")
+    public ResponseEntity<List<Object[]>> obtenerFrecuencia() {
+        try {
+            // Llamamos al repositorio a través del servicio (o directo si prefieres)
+            List<Object[]> datos = ventaService.obtenerFrecuenciaVentas();
+            return new ResponseEntity<>(datos, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/ingresos")
+    public ResponseEntity<List<Object[]>> obtenerIngresos() {
+        try {
+            List<Object[]> datos = ventaService.obtenerIngresosDiarios();
+            return new ResponseEntity<>(datos, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }
