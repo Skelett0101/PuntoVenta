@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(lotes => {
                 tablaLotes.innerHTML = "";
                 lotes.forEach(l => {
-                    const fechaVenc = new Date(l.fecha_caducidad).toLocaleDateString();
+                    const fechaVenc = new Date(l.fechaCaducidad).toLocaleDateString();
                     const statusClass = l.stock_lote <= 0 ? 'danger' : (l.stock_lote < 10 ? 'warning' : 'success');
                     
                     tablaLotes.innerHTML += `
@@ -34,12 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <span class="brand">${l.producto.marca}</span>
                                 </div>
                             </td>
-                            <td><code class="lote-tag">${l.codigo_lote}</code></td>
+                            <td><code class="lote-tag">${l.codigoLote}</code></td>
                             <td><span class="status-pill ${statusClass}">${fechaVenc}</span></td>
-                            <td><b>${l.stock_lote} Unidades</b></td>
+                            <td><b>${l.stockLote} Unidades</b></td>
                             <td class="text-right">
                                 <div class="action-btns">
-                                    <button class="btn-action delete" onclick="eliminarLote(${l.id_lote})"><i class="ph ph-trash"></i></button>
+                                    <button class="btn-action delete" onclick="eliminarLote(${l.idLote})"><i class="ph ph-trash"></i></button>
                                 </div>
                             </td>
                         </tr>`;
