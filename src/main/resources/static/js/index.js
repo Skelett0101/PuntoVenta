@@ -29,11 +29,12 @@ async function cargarGraficaFrecuenciaVentas() {
                     pointBackgroundColor: '#2563eb'
                 }]
             },
-            options: { 
-                responsive: true, 
-                plugins: { legend: { display: false } },
-                scales: { y: { beginAtZero: true } }
-            }
+            options: 			{ 
+			    responsive: true, 
+			    maintainAspectRatio: false, // Importante para que respete el alto del CSS
+			    plugins: { legend: { display: false } },
+			    scales: { y: { beginAtZero: true } }
+			}
         });
     } catch (e) { console.error("No se pudo cargar la frecuencia:", e); }
 }
@@ -60,11 +61,12 @@ async function cargarGraficaIngresos() {
                     pointBackgroundColor: '#10b981'
                 }]
             },
-            options: { 
-                responsive: true, 
-                plugins: { legend: { display: false } },
-                scales: { y: { beginAtZero: true } }
-            }
+            options: 			{ 
+			    responsive: true, 
+			    maintainAspectRatio: false, // Importante para que respete el alto del CSS
+			    plugins: { legend: { display: false } },
+			    scales: { y: { beginAtZero: true } }
+			}
         });
     } catch (e) { console.error("No se pudieron cargar los ingresos:", e); }
 }

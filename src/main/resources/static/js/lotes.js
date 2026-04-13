@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(res => res.json())
             .then(lotes => {
                 tablaLotes.innerHTML = "";
+				procesarAlertasReales(lotes);
                 lotes.forEach(l => {
                     const fechaVenc = new Date(l.fechaCaducidad).toLocaleDateString();
                     const statusClass = l.stock_lote <= 0 ? 'danger' : (l.stock_lote < 10 ? 'warning' : 'success');
@@ -47,6 +48,104 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
+	// Función para mostrar/ocultar el panel de alertas
+	window.toggleAlertas = function() {
+	    const panel = document.getElementById('notification-container');
+	    if (panel.style.display === "none" || panel.style.display === "") {
+	        panel.style.display = "block";
+	    } else {
+	        panel.style.display = "none";
+	    }
+	};
+	
+	window.mostrarNotificacion = function(mensaje, tipo) {
+	    const contenedor = document.getElementById('notification-container');
+	    if(!contenedor) return;
+
+	    const icono = tipo === 'danger' ? 'ph-warning-octagon' : 'ph-bell-ringing';
+	    const color = tipo === 'danger' ? '#ef4444' : '#f59e0b';
+	    const bg = tipo === 'danger' ? '#fef2f2' : '#fffbeb';
+
+	    const alerta = document.createElement('div');
+	    alerta.style.cssText = `
+	        display: flex; 
+	        align-items: center; 
+	        gap: 12px; 
+	        padding: 10px; 
+	        margin-bottom: 8px; 
+	        border-radius: 8px; 
+	        background: ${bg}; 
+	        border-left: 4px solid ${color};
+	        animation: slideIn 0.3s ease-out;
+	    `;
+	    
+	    alerta.innerHTML = `
+	        <i class="ph-bold ${icono}" style="font-size: 1.2rem; color: ${color};"></i>
+	        <div style="flex: 1;">
+	            <p style="margin: 0; font-size: 12px; font-weight: 600; color: #1e293b;">Aviso de Sistema</p>
+	            <p style="margin: 0; font-size: 11px; color: #64748b; line-height: 1.2;">${mensaje}</p>
+	        </div>
+	    `;
+	    contenedor.appendChild(alerta);
+	};
+
+	window.procesarAlertasReales = function(lotes) {
+	    const hoy = new Date("2026-04-12"); 
+	    const contenedor = document.getElementById('notification-container');
+	    if(!contenedor) return;
+	    
+	    contenedor.innerHTML = ""; 
+
+	    lotes.forEach(l => {
+	        const fechaCad = new Date(l.fechaCaducidad);
+	        const difTiempo = fechaCad - hoy;
+	        const difDias = Math.ceil(difTiempo / (1000 * 60 * 60 * 24));
+
+	        if (difDias <= 0) {
+	            window.mostrarNotificacion(`El lote ${l.codigoLote} (${l.producto.nombre}) ya CADUCÓ.`, "danger");
+	        } else if (difDias <= 7) {
+	            window.mostrarNotificacion(`El lote ${l.codigoLote} (${l.producto.nombre}) vence en ${difDias} días.`, "warning");
+	        }
+	    });
+	};
+
+	// Mantenemos tus funciones de alertas pero conectadas al contenedor
+	function mostrarNotificacion(mensaje, tipo) {
+	    const contenedor = document.getElementById('notification-container');
+	    const icono = tipo === 'danger' ? 'ph-warning-octagon' : 'ph-bell-ringing';
+	    
+	    const alerta = document.createElement('div');
+	    alerta.className = `kpi-card alert-${tipo}`;
+	    alerta.style.cssText = "display:flex; align-items:center; gap:15px; padding:15px; margin-bottom:10px; border-radius:8px;";
+	    
+	    alerta.innerHTML = `
+	        <div class="kpi-icon"><i class="ph-bold ${icono}"></i></div>
+	        <div class="kpi-info">
+	            <h4 style="margin:0; font-size:14px;">Aviso de Sistema</h4>
+	            <p style="margin:0; font-size:13px;">${mensaje}</p>
+	        </div>
+	    `;
+	    contenedor.appendChild(alerta);
+	}
+
+	function procesarAlertasReales(lotes) {
+	    const hoy = new Date("2026-04-12"); 
+	    const contenedor = document.getElementById('notification-container');
+	    contenedor.innerHTML = ""; 
+
+	    lotes.forEach(l => {
+	        const fechaCad = new Date(l.fechaCaducidad);
+	        const difTiempo = fechaCad - hoy;
+	        const difDias = Math.ceil(difTiempo / (1000 * 60 * 60 * 24));
+
+	        if (difDias <= 0) {
+	            mostrarNotificacion(`El lote ${l.codigoLote} (${l.producto.nombre}) ya CADUCÓ.`, "danger");
+	        } else if (difDias <= 7) {
+	            mostrarNotificacion(`El lote ${l.codigoLote} (${l.producto.nombre}) vence en ${difDias} días.`, "warning");
+	        }
+	    });
+	}
+	
     // 3. Registrar nuevo lote
     formLote.addEventListener('submit', async (e) => {
         e.preventDefault();
