@@ -307,3 +307,17 @@ nav a:hover {
     background: #cbd5e1;
     border-radius: 10px;
 }
+
+.charts-full-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Crea dos columnas iguales */
+    gap: 20px; /* Espacio entre las gráficas */
+    margin-top: 20px;
+}
+
+/* Para que en móviles se vea una sola columna */
+@media (max-width: 768px) {
+    .charts-full-grid {
+        grid-template-columns: 1fr;
+    }
+}
