@@ -80,10 +80,21 @@
             </aside>
 
             <section class="card no-padding overflow-hidden">
-                <div class="table-actions">
+                <div class="table-actions" style="display: flex; gap: 15px; align-items: center; justify-content: space-between;">
                     <div class="search-box">
                         <i class="ph ph-magnifying-glass"></i>
                         <input type="text" placeholder="Buscar por código de lote...">
+                    </div>
+
+                    <div class="date-filter" style="display: flex; gap: 8px; align-items: center;">
+                        <label style="font-weight: 600; font-size: 14px;">Vencimiento:</label>
+                        <input type="date" id="filtro-fecha" class="form-control" style="width: auto; padding: 5px;">
+                        <button class="btn-secondary" onclick="filtrarPorFecha()" style="padding: 8px 12px; height: auto;">
+                            <i class="ph ph-funnel"></i>
+                        </button>
+                        <button class="btn-action" onclick="location.reload()" title="Limpiar filtro">
+                            <i class="ph ph-arrows-counter-clockwise"></i>
+                        </button>
                     </div>
                 </div>
                 <table class="admin-table">
