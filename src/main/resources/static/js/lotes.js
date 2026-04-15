@@ -24,8 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 tablaLotes.innerHTML = "";
 				procesarAlertasReales(lotes);
                 lotes.forEach(l => {
-                    const fechaVenc = new Date(l.fechaCaducidad).toLocaleDateString();
-                    const statusClass = l.stock_lote <= 0 ? 'danger' : (l.stock_lote < 10 ? 'warning' : 'success');
+                    const fechaVenc = new Date(l.fechaCaducidad + "T00:00:00").toLocaleDateString();
+                    const statusClass = l.stockLote <= 0 ? 'danger' : (l.stockLote < 10 ? 'warning' : 'success');
                     
                     tablaLotes.innerHTML += `
                         <tr>

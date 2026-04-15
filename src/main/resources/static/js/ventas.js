@@ -209,4 +209,5 @@ function quitarDelCarrito(index) {
     actualizarTotales();
     renderizarCarrito();
 }
+
 });
