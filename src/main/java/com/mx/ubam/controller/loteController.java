@@ -28,6 +28,21 @@ public class loteController {
         return loteRepo.findAll();
     }
     
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminarLote(@PathVariable Long id) {
+        try {
+            // 1. Primero destruimos cualquier venta que esté usando este lote
+            loteRepo.forzarBorradoDeVentas(id);
+            
+            // 2. Ahora sí, borramos el lote sin que la base de datos se queje
+            loteRepo.deleteById(id);
+            
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error al forzar eliminación: " + e.getMessage());
+        }
+    }
+    
     @PostMapping
     public ResponseEntity<?> guardar(@RequestBody Map<String, Object> payload) {
         try {

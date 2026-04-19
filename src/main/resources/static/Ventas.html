@@ -71,10 +71,25 @@
 
             </nav>
 
-            <div class="user-profile">
-                <span>Admin</span>
-                <i class="ph-fill ph-user-circle"></i>
-            </div>
+			<div class="user-profile" style="display: flex; align-items: center; gap: 20px;">
+			                
+			                <div class="nav-notifications" style="position: relative; cursor: pointer;" onclick="toggleNotificacionesGlobales()">
+			                    <i class="ph-fill ph-bell" style="font-size: 1.6rem; color: #64748b; transition: 0.2s;"></i>
+			                    <span id="global-notif-badge" style="position: absolute; top: -4px; right: -4px; background: #ef4444; color: white; font-size: 0.7rem; font-weight: bold; padding: 2px 6px; border-radius: 50%; display: none;">0</span>
+			                    
+			                    <div id="global-notif-dropdown" style="display: none; position: absolute; top: 40px; right: -10px; width: 340px; max-height: 400px; overflow-y: auto; background: white; box-shadow: 0 10px 25px rgba(0,0,0,0.15); border-radius: 12px; z-index: 9999; padding: 15px; border: 1px solid var(--border); cursor: default;" onclick="event.stopPropagation()">
+			                        <h4 style="margin: 0 0 10px 0; padding-bottom: 10px; border-bottom: 1px solid var(--border); font-size: 14px; color: #1e293b;">Alertas del Sistema</h4>
+			                        
+			                        <div id="global-notif-list">
+			                            </div>
+			                    </div>
+			                </div>
+
+			                <div style="display: flex; align-items: center; gap: 8px; color: var(--text-muted);">
+			                    <span>Admin</span>
+			                    <i class="ph-fill ph-user-circle" style="font-size: 1.8rem;"></i>
+			                </div>
+			            </div>
 
         </div>
 
@@ -247,6 +262,7 @@
 
 
     <script src="js/ventas.js"></script>
+	<script src="js/notificaciones.js"></script>
 
 </body>
 

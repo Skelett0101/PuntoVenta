@@ -15,26 +15,32 @@ async function cargarGraficaFrecuenciaVentas() {
         
         const ctx = document.getElementById('chartVentas').getContext('2d');
         new Chart(ctx, {
-            type: 'line', 
+            type: 'pie', // Cambiado a gráfica de pastel
             data: {
                 labels: datos.map(item => item.fecha || Object.values(item)[0]),
                 datasets: [{
                     label: 'Tickets',
                     data: datos.map(item => item.cantidad || item.count || Object.values(item)[1] || 0),
-                    borderColor: '#2563eb', // Azul
-                    backgroundColor: 'rgba(37, 99, 235, 0.1)', // Sombreado azul transparente
-                    fill: true,
-                    tension: 0.4, // Curva suave
-                    pointRadius: 4, // Tamaño de los puntos
-                    pointBackgroundColor: '#2563eb'
+                    // Paleta de colores para cada rebanada del pastel
+                    backgroundColor: [
+                        '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', 
+                        '#06b6d4', '#ec4899', '#f97316', '#14b8a6', '#6366f1'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#ffffff' // Borde blanco para separar las rebanadas
                 }]
             },
-            options: 			{ 
-			    responsive: true, 
-			    maintainAspectRatio: false, // Importante para que respete el alto del CSS
-			    plugins: { legend: { display: false } },
-			    scales: { y: { beginAtZero: true } }
-			}
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false,
+                plugins: { 
+                    legend: { 
+                        display: true, 
+                        position: 'right' // Mueve la leyenda a la derecha
+                    } 
+                }
+                // Se eliminaron las opciones de "scales" (ejes Y/X) porque no aplican aquí
+            }
         });
     } catch (e) { console.error("No se pudo cargar la frecuencia:", e); }
 }
@@ -47,26 +53,31 @@ async function cargarGraficaIngresos() {
 
         const ctx = document.getElementById('chartIngresos').getContext('2d');
         new Chart(ctx, {
-            type: 'line', // Cambiado explícitamente a línea
+            type: 'pie', // Cambiado a gráfica de pastel
             data: {
                 labels: datos.map(item => item.fecha || Object.values(item)[0]),
                 datasets: [{
                     label: 'Ingresos ($)',
                     data: datos.map(item => item.total || item.monto || Object.values(item)[1] || 0),
-                    borderColor: '#10b981', // Verde
-                    backgroundColor: 'rgba(16, 185, 129, 0.1)', // Sombreado verde transparente
-                    fill: true,
-                    tension: 0.4, // Misma suavidad que la de arriba
-                    pointRadius: 4, // Mismos puntos
-                    pointBackgroundColor: '#10b981'
+                    // Paleta de colores (ligeramente distinta para diferenciar)
+                    backgroundColor: [
+                        '#10b981', '#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b', 
+                        '#ef4444', '#06b6d4', '#14b8a6', '#f97316', '#6366f1'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
                 }]
             },
-            options: 			{ 
-			    responsive: true, 
-			    maintainAspectRatio: false, // Importante para que respete el alto del CSS
-			    plugins: { legend: { display: false } },
-			    scales: { y: { beginAtZero: true } }
-			}
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false,
+                plugins: { 
+                    legend: { 
+                        display: true, 
+                        position: 'right' 
+                    } 
+                }
+            }
         });
     } catch (e) { console.error("No se pudieron cargar los ingresos:", e); }
 }
