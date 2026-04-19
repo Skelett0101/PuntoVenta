@@ -102,24 +102,18 @@
 			                        <input type="text" id="buscador-lote" placeholder="Buscar por código de lote...">
 			                    </div>
 
-			                    <div class="date-filter" style="display: flex; gap: 8px; align-items: center; position: relative;">
-			                        <label style="font-weight: 600; font-size: 14px;">Vencimiento:</label>
-			                        <input type="date" id="filtro-fecha" class="form-control" style="width: auto; padding: 5px;">
-			                        
-			                        <button class="btn-secondary" onclick="filtrarPorFecha()" style="padding: 8px 12px; height: auto;">
-			                            <i class="ph ph-funnel"></i>
-			                        </button>
+								<div class="date-filter" style="display: flex; gap: 8px; align-items: center; position: relative;">
+								    <label style="font-weight: 600; font-size: 14px;">Vencimiento:</label>
+								    <input type="date" id="filtro-fecha" class="form-control" style="width: auto; padding: 5px;">
+								    
+								    <button class="btn-secondary" onclick="filtrarPorFecha()" style="padding: 8px 12px; height: auto;">
+								        <i class="ph ph-funnel"></i>
+								    </button>
 
-			                        <button class="btn-action" onclick="window.toggleAlertas()" title="Ver alertas de caducidad">
-			                            <i class="ph ph-bell"></i>
-			                        </button>
-
-			                        <div id="notification-container" style="display: none; position: absolute; top: 45px; right: 40px; width: 320px; max-height: 400px; overflow-y: auto; background: white; box-shadow: 0 10px 25px rgba(0,0,0,0.15); border-radius: 12px; z-index: 1000; padding: 10px; border: 1px solid var(--border);"></div>
-
-			                        <button class="btn-action" onclick="location.reload()" title="Limpiar filtro">
-			                            <i class="ph ph-arrows-counter-clockwise"></i>
-			                        </button>
-			                    </div>
+								    <button class="btn-action" onclick="location.reload()" title="Limpiar filtro">
+								        <i class="ph ph-arrows-counter-clockwise"></i>
+								    </button>
+								</div>
 			                </div>
 			                
 			                <table class="admin-table">
