@@ -20,7 +20,7 @@ import com.mx.ubam.service.VentaService;
 
 @RestController
 @RequestMapping("/api/venta")
-@CrossOrigin 
+@CrossOrigin(origins = "*")
 public class VentaController {
     
     @Autowired
