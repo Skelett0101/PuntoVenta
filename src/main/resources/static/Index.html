@@ -98,7 +98,7 @@
                 </div>
                 <div class="chart-container" style="position: relative; height:300px; padding: 20px;">
                     <canvas id="chartLow"></canvas>
-                </div>
+                </div>a
             </div>
 
             <div class="card">
@@ -119,11 +119,19 @@
                 </div>
             </div>
         </div>
-    </main>
+		
+		</div> <div style="text-align: center; margin-top: 30px; margin-bottom: 30px;">
+		            <button class="btn-primary" onclick="window.descargarReporte()" style="padding: 12px 30px; font-size: 16px; display: inline-flex; align-items: center; justify-content: center; width: auto;">
+		                <i class="ph ph-file-pdf" style="font-size: 1.5rem; margin-right: 8px;"></i>
+		                Generar Reporte PDF
+		            </button>
+		        </div>
+			</main>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="js/index.js"></script>
-	<script src="js/notificaciones.js"></script>
-</body>
+			    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-</html>
+			    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+			    <script src="js/index.js"></script>
+			    <script src="js/notificaciones.js"></script>
+			</body>
+			</html>
