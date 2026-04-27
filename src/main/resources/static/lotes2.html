@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#474646",
+                        "surface": "#fbf9f9",
+                        "background": "#fbf9f9",
+                        "secondary-fixed-dim": "#e9c349",
+                        "on-primary-container": "#858383",
+                        "tertiary-container": "#1a1c1c",
+                        "secondary-fixed": "#ffe088",
+                        "surface-dim": "#dbdad9",
+                        "on-error": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "surface-tint": "#5f5e5e",
+                        "outline": "#747878",
+                        "on-primary-fixed": "#1c1b1b",
+                        "surface-container": "#efeded",
+                        "on-secondary-container": "#745c00",
+                        "outline-variant": "#c4c7c7",
+                        "primary-container": "#1c1b1b",
+                        "on-background": "#1b1c1c",
+                        "inverse-on-surface": "#f2f0f0",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "primary-fixed": "#e5e2e1",
+                        "surface-bright": "#fbf9f9",
+                        "primary-fixed-dim": "#c8c6c5",
+                        "on-tertiary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed": "#e2e2e2",
+                        "inverse-primary": "#c8c6c5",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "on-tertiary-container": "#838484",
+                        "on-secondary-fixed": "#241a00",
+                        "error": "#ba1a1a",
+                        "tertiary": "#000000",
+                        "surface-container-highest": "#e3e2e2",
+                        "secondary": "#735c00",
+                        "on-secondary-fixed-variant": "#574500",
+                        "inverse-surface": "#303031",
+                        "error-container": "#ffdad6",
+                        "secondary-container": "#fed65b",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "surface-variant": "#e3e2e2",
+                        "surface-container-high": "#e9e8e7",
+                        "on-surface": "#1b1c1c",
+                        "surface-container-low": "#f5f3f3",
+                        "on-surface-variant": "#444748",
+                        "primary": "#000000",
+                        "on-error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-margin": "40px",
+                        "card-padding": "32px",
+                        "gutter": "24px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "display-xl": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-xl": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #fbf9f9;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .elite-card {
+            background-color: #ffffff;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
+            border-radius: 0.5rem;
+            padding: 32px;
+        }
+    </style>
+</head>
+
+<body class="font-body-md text-on-background">
+    <!-- MENU SUPERIOR -->
+        <header
+            class="sticky top-0 w-full bg-white/80 backdrop-blur-xl z-40 border-b border-neutral-100 shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+            <div class="flex items-center justify-between px-10 h-20 w-full max-w-[1440px] mx-auto">
+                <div class="flex items-center gap-12">
+                    <div class="flex flex-col">
+                        <h1 class="text-neutral-900 font-black uppercase tracking-widest text-sm">Abarrotes Monrroy</h1>
+                        <p class="text-[#D4AF37] text-[8px] uppercase tracking-[0.2em] font-bold">Gestión Premium</p>
+                    </div>
+                    <div class="flex items-center gap-8">
+                        <div class="relative flex items-center">
+                            <span class="material-symbols-outlined absolute left-3 text-neutral-400">search</span>
+                            <input
+                                class="pl-10 pr-4 py-2 w-72 bg-neutral-50 border-none rounded-full focus:ring-1 focus:ring-[#D4AF37] text-sm transition-all"
+                                placeholder="Buscar en inventario..." type="text" />
+                        </div>
+                        <!-------------------------MENU SUPERIOR PAGINAS ADJUNTAS----------------------------------->
+                        <nav class="hidden md:flex gap-6">
+                            <a class="text-neutral-500 hover:text-neutral-800 transition-colors text-sm"
+                                href="Index2.html">Inicio</a>
+                            <a class="text-neutral-500 hover:text-neutral-800 transition-colors text-sm"
+                                href="Ventas2.html">Ventas</a>
+                                <a class="text-neutral-900 border-b-2 border-[#D4AF37] pb-1 font-semibold text-sm"
+                                href="lotes2.html">Lotes</a>
+                            <a class="text-neutral-500 hover:text-neutral-800 transition-colors text-sm"
+                                href="Productos2.html">Productos</a>
+                        </nav>
+                        <!-------------------------------------------------------------------------->
+                    </div>
+                </div>
+                <div class="flex items-center gap-6">
+                    <button class="relative p-2 rounded-full hover:bg-neutral-50 transition-all active:scale-95">
+                        <span class="material-symbols-outlined text-neutral-700"
+                            data-icon="notifications">notifications</span>
+                        <span
+                            class="absolute top-2 right-2 w-2 h-2 bg-[#D4AF37] rounded-full border-2 border-white"></span>
+                    </button>
+                    <div class="flex items-center gap-3 pl-4 border-l border-neutral-100">
+                        <div class="text-right">
+                            <p class="text-xs font-bold text-neutral-900 leading-none">Ejecutivo Elite</p>
+                            <p class="text-[10px] text-neutral-400 uppercase tracking-tighter mt-1">Administrador</p>
+                        </div>
+                        <img alt="Perfil de Ejecutivo"
+                            class="w-10 h-10 rounded-full border-2 border-[#D4AF37] object-cover"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDj_S66IWtvjUqRBAzdY6eTnj5rNKZlxf8jiLfwraCRKI37o8YtmATq39o4aP12jHzenAUTD6ioTt4xULuCywdiKuXG6star3JYe1XsmT_KiMHYvUQ9eztsVyhX_mw2wKLUz9M4fMU2rGEoP6dWFcNgYW6ffzpRYrjfvzoL3ec40Q4Hu3gDI_IsmU-R561druhhIRCpm_U02uZwKXNEcZb4WDDRx4XFjeLX8HQ_izxAgwRdDl6qAFwOWALg5Sv9cbNsqasKSUHGUhg" />
+                    </div>
+                </div>
+            </div>
+        </header>
+    <main class="max-w-[1440px] mx-auto px-10 py-12">
+        <!-- Title Section -->
+        <div class="mb-12">
+            <h1 class="font-display-xl text-display-xl text-primary mb-2">Control de Lotes</h1>
+            <p class="text-on-primary-container font-body-lg">Gestión estratégica de inventario y trazabilidad de
+                productos.</p>
+        </div>
+        <!-- REGISTRAR LOTE -->
+        <div class="grid grid-cols-12 gap-gutter">
+            <!-- Left Column: Entrada de Lote (Narrow) -->
+            <div class="col-span-12 lg:col-span-4">
+                <section class="elite-card">
+                    <div class="flex items-center gap-3 mb-8">
+                        <span class="material-symbols-outlined text-secondary">inventory_2</span>
+                        <h2 class="font-headline-md text-headline-md">Entrada de Lote</h2>
+                    </div><form class="space-y-6">
+                        <div class="space-y-2">
+                            <label class="font-label-sm text-label-sm text-on-surface-variant">SELECCIÓN DE
+                                PRODUCTO</label>
+                                <!-----------------------------SELECCIONAR PRODUCTOS----------------------------------->
+                            <select
+                                class="w-full bg-surface-container-low border-b-2 border-outline-variant focus:border-secondary transition-colors py-3 px-2 outline-none appearance-none"
+                                id="producto" class="form-control" required>
+                                <option value="">Seleccionar producto...</option>
+                            </select>
+                            <!-------------------------------------------------------------------------------------->
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <!-----------------------------CODIGO DEL LOTE----------------------------------->
+                            <div class="space-y-2">
+                                <label class="font-label-sm text-label-sm text-on-surface-variant">CÓDIGO DE
+                                    LOTE/ID</label>
+                                <input id="codigo_lote"
+                                    class="w-full bg-surface-container-low border-b-2 border-outline-variant focus:border-secondary transition-colors py-3 px-2 outline-none"
+                                    placeholder="LOT-2024-001" type="text" />
+                            </div>
+                            <!----------------------------FECHA DE INGRESO------------------------------------------->
+                            <div class="space-y-2">
+                                <label class="font-label-sm text-label-sm text-on-surface-variant">FECHA INGRESO</label>
+                                <input id="fecha_ingreso"
+                                    class="w-full bg-surface-container-low border-b-2 border-outline-variant focus:border-secondary transition-colors py-3 px-2 outline-none"
+                                    type="date" />
+                            </div>
+                        </div>
+                        <!----------------------------STOCK------------------------------------------->
+                        <div class="space-y-2">
+                            <label class="font-label-sm text-label-sm text-on-surface-variant">CANTIDAD (STOCK)</label>
+                            <input id="stock_lote"
+                                class="w-full bg-surface-container-low border-b-2 border-outline-variant focus:border-secondary transition-colors py-3 px-2 outline-none"
+                                placeholder="0.00" type="number" />
+                        </div>
+                        <!-- FECHA D3E CADUCIDAD Y ADVERENCIA -->
+                        <div class="bg-error-container/20 border-l-4 border-error p-6 rounded-r-lg space-y-3">
+                            <div class="flex items-center gap-2 text-error">
+                                <span class="material-symbols-outlined"
+                                    style="font-variation-settings: 'FILL' 1;">warning</span>
+                                <label class="font-label-sm text-label-sm font-bold uppercase tracking-widest">Fecha de
+                                    Caducidad</label>
+                            </div>
+                            <input id="fecha_caducidad"
+                                class="w-full bg-white/50 border-b-2 border-error/30 focus:border-error transition-colors py-2 px-2 outline-none"
+                                type="date" />
+                            <p class="text-xs text-on-error-container/80 italic">El sistema emitirá alertas automáticas
+                                15 días antes de esta fecha.</p>
+                        </div>
+                        <!------- BOTTON DE REGISTRAR VENTA------->
+                        <button type="submit"
+                            class="w-full bg-primary text-on-primary py-5 rounded-lg font-bold tracking-widest uppercase hover:bg-neutral-800 transition-all active:scale-[0.98] shadow-lg shadow-black/10">
+                            Registrar Entrada
+                        </button>
+                    </form>
+                </section>
+            </div>
+            
+
+            <div class="col-span-12 lg:col-span-8">
+                <section class="elite-card h-full flex flex-col">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4 flex-wrap">
+                        <h2 class="font-headline-md text-headline-md">Inventario por Lotes</h2>
+                        <div class="flex items-center gap-3 w-full md:w-auto">
+                            <div class="relative flex-1 md:flex-none">
+                                <span
+                                    class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+                                <input id="buscador-lote"
+                                    class="pl-12 pr-6 py-3 rounded-full bg-surface-container-low border border-outline-variant focus:border-secondary w-full md:w-64 outline-none text-sm"
+                                    placeholder="Buscar por lote..." type="text" />
+                            </div>
+                            <div class="relative flex-1 md:flex-none">
+                                <span
+                                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg">calendar_today</span>
+                                <input id="filtro-fecha" onchange="filtrarPorFecha()"
+                                    class="pl-10 pr-4 py-3 rounded-full bg-surface-container-low border border-outline-variant focus:border-secondary w-full md:w-48 outline-none text-sm cursor-pointer"
+                                    type="date" />
+                            </div>
+                            <button onclick="location.reload()"
+                                class="w-11 h-11 flex items-center justify-center rounded-full border border-outline-variant bg-white text-outline hover:text-primary hover:border-primary transition-all active:scale-95 group"
+                                title="Recargar">
+                                <span
+                                    class="material-symbols-outlined group-hover:rotate-180 transition-transform duration-500">refresh</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!---TABLA DE LOTES----->
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse">
+                            <thead>
+                                <tr class="text-left border-b border-neutral-100">
+                                    <th class="pb-4 font-label-sm text-on-surface-variant px-2">PRODUCTO</th>
+                                    <th class="pb-4 font-label-sm text-on-surface-variant px-2">LOTE</th>
+                                    <th class="pb-4 font-label-sm text-on-surface-variant px-2">VENCIMIENTO</th>
+                                    <th class="pb-4 font-label-sm text-on-surface-variant px-2">STOCK ACTUAL</th>
+                                    <th class="pb-4 font-label-sm text-on-surface-variant px-2 text-right">ACCIONES</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaLotesBody" class="divide-y divide-neutral-50">
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+    <!-- Footer Decoration -->
+    <footer class="max-w-[1440px] mx-auto px-10 py-8 text-center">
+        <p class="text-on-primary-container text-xs font-label-sm uppercase tracking-widest">© 2024 Abarrotes Elite •
+            Sistema de Gestión de Inventario Premium</p>
+    </footer>
+</body>
+
+</html>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="js/index2.js"></script>
+<script src="js/lotes.js"></script>
+<script src="js/notificaciones.js"></script>
+</body>
+
+</html>

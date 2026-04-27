@@ -37,7 +37,6 @@ public class ProductoService {
             existente.setDescripcion(producto.getDescripcion());
             existente.setPrecio_compra(producto.getPrecio_compra());
             existente.setPrecio_venta(producto.getPrecio_venta());
-
             return repo.save(existente);
         }
 
@@ -66,6 +65,18 @@ public class ProductoService {
         return repo.findAll();
     }
     
+    
+ // 🔹 OBTENER LISTA ÚNICA DE CATEGORÍAS (Para llenar los Selects)
+    public List<String> listarCategoriasUnicas() {
+        // Obtenemos todos los productos, extraemos la categoría, quitamos repetidos y nulos
+        return repo.findAll()
+                   .stream()
+                   .map(Producto::getCategoria)
+                   .filter(c -> c != null && !c.isEmpty())
+                   .distinct()
+                   .sorted() // Opcional: para que salgan en orden alfabético
+                   .toList();
+    }
     
     //servicios de Lote
     

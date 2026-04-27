@@ -47,19 +47,26 @@ public class loteController {
     public ResponseEntity<?> guardar(@RequestBody Map<String, Object> payload) {
         try {
             Lote nuevoLote = new Lote();
+            
+            // Usamos String.valueOf() para evitar errores de casteo
             nuevoLote.setCodigoLote(payload.get("codigo_lote").toString());
             nuevoLote.setStockLote(Long.parseLong(payload.get("stock_lote").toString()));
             nuevoLote.setFechaIngreso(java.time.LocalDate.parse(payload.get("fecha_ingreso").toString()));
             nuevoLote.setFechaCaducidad(java.time.LocalDate.parse(payload.get("fecha_caducidad").toString()));
 
-            Integer idProd = (Integer) payload.get("id_producto");
+            // Obtener el ID del producto de forma segura
+            String idProdStr = payload.get("id_producto").toString();
+            Integer idProd = Integer.parseInt(idProdStr);
+            
             Producto pro = productoRepo.findById(idProd)
-                    .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+                    .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + idProd));
             
             nuevoLote.setProducto(pro);
 
             return ResponseEntity.ok(loteRepo.save(nuevoLote));
         } catch (Exception e) {
+            // Log para ver el error real en la consola de Spring
+            e.printStackTrace(); 
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }

@@ -1,213 +1,168 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const API_VENTAS = "http://localhost:8080/api/venta/confirmar";
+    const API_CONFIRMAR = "http://localhost:8080/api/venta/confirmar";
     const API_PRODUCTOS = "http://localhost:8080/api/productos/categoria/";
     const IVA_PERCENT = 0.16;
 
-    // El "Carrito" que guardará lo que el backend necesita (id y cantidad)
     let carritoItems = [];
 
-    const formVenta = document.getElementById('form-venta');
-    const tablaHistorial = document.getElementById('tabla-ventas-recientes');
-    const statusMsg = document.getElementById('status-msg');
-
-    // Inicializar Fecha y Hora
-    function actualizarFechaHora() {
+    // 1. Reloj y Fecha Automática
+    function initFechaHora() {
         const ahora = new Date();
-        document.getElementById('fecha').value = ahora.toISOString().split('T')[0];
-        document.getElementById('hora_venta').value = ahora.toTimeString().slice(0, 5);
+        document.getElementById('fecha').value = ahora.toLocaleDateString();
+        document.getElementById('hora_venta').value = ahora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
-    actualizarFechaHora();
+    initFechaHora();
+    setInterval(initFechaHora, 60000);
 
-    // Escuchar cambios en el subtotal para actualizar los displays visuales
-    document.getElementById('subtotal').addEventListener('input', (e) => {
-        const subtotal = parseFloat(e.target.value) || 0;
-        const iva = subtotal * IVA_PERCENT;
-        const total = subtotal + iva;
+    // 2. Cargar Productos con Estilo Elite
+    window.cargarProductos = async function(categoria) {
+        const grid = document.getElementById('grid-productos');
+        grid.innerHTML = '<p class="text-center py-10 animate-pulse text-outline">Buscando productos...</p>';
 
-        document.getElementById('total').value = total.toFixed(2);
-        document.getElementById('subtotalDisplay').innerText = subtotal.toFixed(2);
-        document.getElementById('ivaDisplay').innerText = iva.toFixed(2);
-        document.getElementById('totalDisplay').innerText = total.toFixed(2);
-    });
+        // Actualizar UI de botones de categoría
+        document.querySelectorAll('.cat-btn').forEach(btn => {
+            btn.classList.remove('bg-primary', 'text-on-primary');
+            btn.classList.add('bg-surface-container', 'text-on-surface-variant');
+        });
+        event?.currentTarget?.classList.add('bg-primary', 'text-on-primary');
 
-    // Función para agregar producto al carrito interno y actualizar totales
-    window.agregarProductoAlCarrito = function (id, nombre, precio) {
-        // Buscar si ya existe para sumar cantidad
-        const itemExistente = carritoItems.find(item => item.idProducto === id);
+        try {
+            // Si la categoría es 'Todos', podrías necesitar otro endpoint o manejarlo en el backend
+            const url = categoria === 'Todos' ? 'http://localhost:8080/api/productos' : API_PRODUCTOS + categoria;
+            const res = await fetch(url);
+            const productos = await res.json();
 
-        if (itemExistente) {
-            itemExistente.cantidad += 1;
-        } else {
-            carritoItems.push({ idProducto: id, cantidad: 1 });
+            grid.innerHTML = "";
+            productos.forEach(p => {
+                grid.innerHTML += `
+                    <div onclick="agregarAlCarrito(${p.id_producto}, '${p.nombre}', ${p.precio_venta})" 
+                         class="group cursor-pointer bg-surface rounded-lg overflow-hidden border border-outline-variant/30 hover:border-secondary-fixed-dim transition-all flex h-24 flex-shrink-0">
+                        <div class="p-3 flex flex-col justify-between flex-grow">
+                            <h3 class="font-semibold text-[13px] leading-tight text-primary">${p.nombre}</h3>
+                            <div class="flex justify-between items-center">
+                                <span class="text-secondary font-bold text-[14px]">$${p.precio_venta.toFixed(2)}</span>
+                                <span class="material-symbols-outlined text-outline group-hover:text-secondary-fixed-dim text-sm">add_circle</span>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+        } catch (err) {
+            grid.innerHTML = '<p class="text-red-500 text-xs p-4">Error al conectar con el servidor</p>';
         }
-
-        // Actualizar el input de subtotal (esto disparará el evento 'input' de arriba)
-        const subtotalInput = document.getElementById('subtotal');
-        let nuevoSubtotal = (parseFloat(subtotalInput.value) || 0) + precio;
-        subtotalInput.value = nuevoSubtotal.toFixed(2);
-        subtotalInput.dispatchEvent(new Event('input'));
-
-        notify(`Agregado: ${nombre}`, "success");
     };
 
-    // Enviar la venta al Backend
-    formVenta.addEventListener('submit', async (e) => {
+    // 3. Lógica del Carrito
+    window.agregarAlCarrito = function(id, nombre, precio) {
+        const existe = carritoItems.find(item => item.idProducto === id);
+        if (existe) {
+            existe.cantidad++;
+        } else {
+            carritoItems.push({ idProducto: id, nombre, precio, cantidad: 1 });
+        }
+        renderizarCarrito();
+    };
+
+    window.quitarUno = function(id) {
+        const item = carritoItems.find(i => i.idProducto === id);
+        if (item.cantidad > 1) item.cantidad--;
+        else carritoItems = carritoItems.filter(i => i.idProducto !== id);
+        renderizarCarrito();
+    };
+
+    window.vaciarCarrito = function() {
+        if(confirm("¿Deseas vaciar la lista actual?")) {
+            carritoItems = [];
+            renderizarCarrito();
+        }
+    };
+
+    function renderizarCarrito() {
+        const tabla = document.getElementById('carrito-items');
+        const emptyMsg = document.getElementById('carrito-vacio');
+        const countLabel = document.getElementById('cart-count');
+        
+        tabla.innerHTML = "";
+        let subtotal = 0;
+        let totalUnidades = 0;
+
+        if (carritoItems.length === 0) {
+            emptyMsg.classList.remove('hidden');
+        } else {
+            emptyMsg.classList.add('hidden');
+            carritoItems.forEach(item => {
+                const sub = item.precio * item.cantidad;
+                subtotal += sub;
+                totalUnidades += item.cantidad;
+
+                tabla.innerHTML += `
+                    <tr class="hover:bg-surface-container-low transition-colors group">
+                        <td class="px-6 py-4 font-body-md">
+                            <div class="flex items-center gap-2">
+                                <button onclick="quitarUno(${item.idProducto})" class="text-outline hover:text-error">
+                                    <span class="material-symbols-outlined text-sm">remove_circle</span>
+                                </button>
+                                <span>${item.cantidad}x</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="font-body-md text-primary font-semibold">${item.nombre}</div>
+                            <div class="text-[10px] text-outline">$${item.precio.toFixed(2)} c/u</div>
+                        </td>
+                        <td class="px-6 py-4 text-right font-body-md text-primary font-bold">$${sub.toFixed(2)}</td>
+                    </tr>`;
+            });
+        }
+
+        countLabel.innerText = `${totalUnidades} unidades en total`;
+        actualizarTotales(subtotal);
+    }
+
+    function actualizarTotales(sub) {
+        const iva = sub * IVA_PERCENT;
+        const total = sub + iva;
+
+        document.getElementById('subtotalDisplay').innerText = `$${sub.toLocaleString()}`;
+        document.getElementById('ivaDisplay').innerText = `$${iva.toLocaleString()}`;
+        document.getElementById('totalDisplay').innerText = `$${total.toLocaleString()}`;
+        document.getElementById('big-total').innerText = `$${total.toLocaleString()}`;
+    }
+
+    // 4. Confirmar Venta (Backend)
+    document.getElementById('form-venta').addEventListener('submit', async (e) => {
         e.preventDefault();
 
         if (carritoItems.length === 0) {
-            notify("El carrito está vacío", "error");
+            alert("Agrega productos antes de finalizar");
             return;
         }
 
-        const ventaData = {
+        const payload = {
             idUsuario: parseInt(document.getElementById('id_usuario').value),
-            nombreVenta: document.getElementById('nombreVenta').value || "Venta General",
-            items: carritoItems // Coincide con List<ItemDetalleDTO> en Java
+            nombreVenta: document.getElementById('nombreVenta').value || "Venta Elite",
+            items: carritoItems.map(i => ({ idProducto: i.idProducto, cantidad: i.cantidad }))
         };
 
         try {
-            const response = await fetch(API_VENTAS, {
+            const response = await fetch(API_CONFIRMAR, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(ventaData)
+                body: JSON.stringify(payload)
             });
 
             if (response.ok) {
-                const ventaRealizada = await response.json();
-                agregarFilaHistorial(ventaRealizada);
-                notify("¡Venta finalizada y stock actualizado!", "success");
-
-                // Resetear todo
+                alert("✅ Venta procesada exitosamente");
                 carritoItems = [];
-                formVenta.reset();
-                document.getElementById('subtotal').value = "";
-                document.getElementById('subtotal').dispatchEvent(new Event('input'));
-                actualizarFechaHora();
+                document.getElementById('nombreVenta').value = "";
+                renderizarCarrito();
             } else {
-                const errorTexto = await response.text();
-                notify("Error: " + errorTexto, "error");
+                const err = await response.text();
+                alert("❌ Error: " + err);
             }
-        } catch (err) {
-            notify("No se pudo conectar con el servidor", "error");
-            console.error(err);
+        } catch (error) {
+            alert("No hay conexión con el servidor");
         }
     });
 
-    // Cargar productos por categoría
-    window.cargarProductosCategoria = function () {
-        const categoria = document.getElementById("categoriaTabla").value;
-        if (!categoria) return;
-
-        fetch(API_PRODUCTOS + categoria)
-            .then(res => res.json())
-            .then(productos => {
-                const tabla = document.getElementById("tabla-productos");
-                tabla.innerHTML = "";
-                productos.forEach(p => {
-                    tabla.innerHTML += `
-    <tr>
-        <td>${p.id_producto}</td> 
-        <td>${p.nombre}</td>
-        <td>$${p.precio_venta}</td>
-        <td>
-<button type="button" class="btn-primary" style="padding: 5px 10px;" 
-    onclick="agregarProductoAlCarrito(${p.id_producto}, '${p.nombre}', ${p.precio_venta})">
-    <i class="ph ph-plus"></i> Agregar
-</button>
-        </td>
-    </tr>`;
-                });
-            });
-    };
-
-    function agregarFilaHistorial(venta) {
-        if (tablaHistorial.innerText.includes("Esperando")) tablaHistorial.innerHTML = "";
-        const fila = document.createElement("tr");
-        fila.innerHTML = `
-            <td>#${venta.idVenta}</td>
-            <td>${venta.nombreVenta}</td>
-            <td>$${parseFloat(venta.total).toFixed(2)}</td>
-            <td><span class="status-pill success">Completado</span></td>
-        `;
-        tablaHistorial.prepend(fila);
-    }
-
-    function notify(text, type) {
-        statusMsg.textContent = text;
-        statusMsg.className = `status-box status-${type}`;
-        statusMsg.style.display = "block";
-        setTimeout(() => { statusMsg.style.display = "none"; }, 4000);
-    }
-
-    // Lógica de Tabs
-    window.mostrarTab = function (tab) {
-        document.getElementById("tab-historial").style.display = tab === 'historial' ? "block" : "none";
-        document.getElementById("tab-categorias").style.display = tab === 'categorias' ? "block" : "none";
-
-        document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
-        event.currentTarget.classList.add("active");
-    };
-    // Función para actualizar la vista del carrito
-function renderizarCarrito() {
-    const contenedor = document.getElementById('carrito-items');
-    const mensajeVacio = document.getElementById('carrito-vacio');
-    
-    contenedor.innerHTML = "";
-    
-    if (carritoItems.length === 0) {
-        mensajeVacio.style.display = "block";
-        return;
-    }
-    
-    mensajeVacio.style.display = "none";
-    
-    carritoItems.forEach((item, index) => {
-        const fila = document.createElement('tr');
-        fila.innerHTML = `
-            <td>${item.cantidad}</td>
-            <td>${item.nombre}</td>
-            <td>$${(item.precio * item.cantidad).toFixed(2)}</td>
-            <td>
-                <button onclick="quitarDelCarrito(${index})" style="background:none; border:none; color:red; cursor:pointer">
-                    <i class="ph ph-trash"></i>
-                </button>
-            </td>
-        `;
-        contenedor.appendChild(fila);
-    });
-}
-
-// Modificamos agregarProductoAlCarrito para que use los nombres correctos
-window.agregarProductoAlCarrito = function (id, nombre, precio) {
-    const itemExistente = carritoItems.find(item => item.idProducto === id);
-
-    if (itemExistente) {
-        itemExistente.cantidad += 1;
-    } else {
-        // Guardamos nombre y precio solo para la vista, el backend solo necesita id y cantidad
-        carritoItems.push({ idProducto: id, nombre: nombre, precio: precio, cantidad: 1 });
-    }
-
-    // Actualizar el formulario izquierdo
-    actualizarTotales();
-    renderizarCarrito();
-    notify(`Agregado: ${nombre}`, "success");
-};
-
-function actualizarTotales() {
-    let subtotal = 0;
-    carritoItems.forEach(item => subtotal += (item.precio * item.cantidad));
-    
-    const inputSubtotal = document.getElementById('subtotal');
-    inputSubtotal.value = subtotal.toFixed(2);
-    // Disparar el evento input para que calcule IVA y Total
-    inputSubtotal.dispatchEvent(new Event('input'));
-}
-
-function quitarDelCarrito(index) {
-    carritoItems.splice(index, 1);
-    actualizarTotales();
-    renderizarCarrito();
-}
-
+    // Cargar productos iniciales
+    cargarProductos('Todos');
 });

@@ -28,6 +28,7 @@ public class Producto {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String descripcion;
 
+
     
     //--- COLUMNAS NUMÉRICAS ---
     
@@ -38,7 +39,7 @@ public class Producto {
     private java.math.BigDecimal precio_venta;
 
     // GETTERS Y SETTERS
-
+    
     public Integer getId_producto() {
 		return id_producto;
 	}

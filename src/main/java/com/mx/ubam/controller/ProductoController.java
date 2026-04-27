@@ -73,6 +73,11 @@ public class ProductoController {
         return service.listarPorCategoria(nombre);
     }
     
+    @GetMapping("/categorias-unicas")
+    public List<String> obtenerCategorias() {
+        return service.listarCategoriasUnicas();
+    }
+    
     @GetMapping("/lotes/filtrar")
     public ResponseEntity<List<Lote>> filtrarLotesPorFecha(
             @RequestParam("fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) {

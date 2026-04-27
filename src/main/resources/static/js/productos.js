@@ -1,61 +1,74 @@
 const URL = "http://localhost:8080/api/productos";
+const URL_CATEGORIAS = "http://localhost:8080/api/productos/categorias-unicas";
 
-// 🚀 INICIAR LA PÁGINA Y ESCUCHAR BOTONES
 document.addEventListener("DOMContentLoaded", () => {
+    cargarCategorias();
     cargarProductos();
     
-    // Escucha el formulario de la izquierda (SOLO PARA REGISTRAR NUEVOS)
     document.getElementById("form-producto").addEventListener("submit", guardarProducto); 
-    
-    // Escucha el formulario de la ventana emergente (SOLO PARA ACTUALIZAR)
     document.getElementById("form-editar").addEventListener("submit", actualizarProductoDesdeModal); 
 });
 
-// --- OBTENER TODOS LOS PRODUCTOS ---
+// --- CARGAR CATEGORÍAS ---
+async function cargarCategorias() {
+    try {
+        const res = await fetch(URL_CATEGORIAS);
+        const categorias = await res.json(); 
+        const selectRegistro = document.getElementById("categoria");
+        const selectEditar = document.getElementById("edit_categoria");
+
+        let html = '<option value="" disabled selected>Selecciona una categoría</option>';
+        categorias.forEach(cat => { html += `<option value="${cat}">${cat}</option>`; });
+
+        if (selectRegistro) selectRegistro.innerHTML = html;
+        if (selectEditar) selectEditar.innerHTML = html;
+    } catch (error) { console.error("Error categorías:", error); }
+}
+
+// --- LISTAR PRODUCTOS ---
 async function cargarProductos() {
     const tabla = document.getElementById("tabla-productos");
+    if (!tabla) return; 
 
     try {
         const res = await fetch(URL);
         const productos = await res.json();
-
         tabla.innerHTML = "";
 
         productos.forEach(p => {
+            let catColor = "bg-zinc-100 text-zinc-600";
+            if (p.categoria === 'Bebidas') catColor = "bg-secondary-container text-on-secondary-container";
+            if (p.categoria === 'Lácteos') catColor = "bg-primary-fixed text-on-primary-fixed";
+
             tabla.innerHTML += `
-                <tr>
-                    <td>${p.id_producto}</td>
-                    <td>
-                        <div class="prod-info">
-                            <span class="name">${p.nombre}</span>
-                            <span class="brand">${p.marca} - ${p.capacidad}</span>
+                <tr class="hover:bg-zinc-50 transition-colors group">
+                    <td class="px-8 py-5 text-sm text-zinc-400">#${String(p.id_producto).padStart(3, '0')}</td>
+                    <td class="px-8 py-5">
+                        <div class="flex flex-col">
+                            <span class="font-semibold">${p.nombre}</span>
+                            <span class="text-xs text-outline">${p.marca} - ${p.capacidad}</span>
                         </div>
                     </td>
-                    <td>${p.categoria}</td>
-                    <td><span class="badge-price">$${p.precio_venta.toFixed(2)}</span></td>
-                    <td class="text-right">
-                        <div class="action-btns">
-                            <button type="button" class="btn-action edit" onclick="editarProd(${p.id_producto})">
-                                <i class="ph ph-pencil-simple"></i>
+                    <td class="px-8 py-5"><span class="px-3 py-1 rounded-full ${catColor} text-[10px] font-bold uppercase">${p.categoria}</span></td>
+                    <td class="px-8 py-5 text-right font-semibold">$${p.precio_venta.toFixed(2)}</td>
+                    <td class="px-8 py-5 text-center">
+                        <div class="flex justify-center gap-2">
+                            <button type="button" class="p-2 text-zinc-400 hover:text-secondary" onclick="editarProd(${p.id_producto})">
+                                <span class="material-symbols-outlined">edit</span>
                             </button>
-                            <button type="button" class="btn-action delete" onclick="eliminarProd(${p.id_producto})">
-                                <i class="ph ph-trash"></i>
+                            <button type="button" class="p-2 text-zinc-400 hover:text-error" onclick="eliminarProd(${p.id_producto})">
+                                <span class="material-symbols-outlined">delete</span>
                             </button>
                         </div>
                     </td>
-                </tr>
-            `;
+                </tr>`;
         });
-    } catch (error) {
-        console.error("Error cargando productos:", error);
-    }
+    } catch (error) { console.error("Error tabla:", error); }
 }
 
-// --- GUARDAR PRODUCTO NUEVO (Desde el panel izquierdo) ---
+// --- GUARDAR (POST) ---
 async function guardarProducto(event) {
-    event.preventDefault(); // Evita que la página se recargue
-
-    // Recolectar datos del formulario
+    event.preventDefault();
     const producto = {
         nombre: document.getElementById("nombre").value,
         marca: document.getElementById("marca").value,
@@ -66,66 +79,44 @@ async function guardarProducto(event) {
         descripcion: document.getElementById("descripcion").value
     };
 
-    try {
-        const res = await fetch(URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(producto)
-        });
+    const res = await fetch(URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(producto)
+    });
 
-        if (res.ok) {
-            limpiarFormulario();
-            cargarProductos();
-            alert("Producto guardado exitosamente");
-        } else {
-            alert("Error al guardar el producto");
-        }
-    } catch (error) {
-        console.error("Error en la petición:", error);
+    if (res.ok) {
+        document.getElementById("form-producto").reset();
+        cargarProductos();
+        alert("¡Producto guardado!");
     }
 }
 
-// --- EDITAR PRODUCTO (Abrir Modal y cargar datos) ---
+// --- EDITAR (Cargar datos al Modal) ---
 async function editarProd(id) {
-    try {
-        const res = await fetch(`${URL}/${id}`);
-        
-        if (res.ok) {
-            const producto = await res.json();
+    const res = await fetch(`${URL}/${id}`);
+    if (res.ok) {
+        const p = await res.json();
+        document.getElementById("edit_id_producto").value = p.id_producto;
+        document.getElementById("edit_nombre").value = p.nombre;
+        document.getElementById("edit_marca").value = p.marca;
+        document.getElementById("edit_categoria").value = p.categoria;
+        document.getElementById("edit_capacidad").value = p.capacidad;
+        document.getElementById("edit_precio_compra").value = p.precio_compra;
+        document.getElementById("edit_precio_venta").value = p.precio_venta;
+        document.getElementById("edit_descripcion").value = p.descripcion;
 
-            // Llenar los campos del MODAL 
-            document.getElementById("edit_id_producto").value = producto.id_producto;
-            document.getElementById("edit_nombre").value = producto.nombre;
-            document.getElementById("edit_marca").value = producto.marca;
-            document.getElementById("edit_categoria").value = producto.categoria;
-            document.getElementById("edit_capacidad").value = producto.capacidad;
-            document.getElementById("edit_precio_compra").value = producto.precio_compra;
-            document.getElementById("edit_precio_venta").value = producto.precio_venta;
-            document.getElementById("edit_descripcion").value = producto.descripcion;
-
-            // Mostrar la ventana emergente
-            document.getElementById("modal-editar").style.display = "flex";
-        } else {
-            // Si el backend responde, pero el producto no existe (ej. Error 404)
-            alert("El servidor respondió, pero no se encontró el producto con ID: " + id);
-        }
-    } catch (error) {
-        // Si el backend está apagado o hay problema de CORS
-        console.error("Error obteniendo el producto:", error);
-        alert("¡Error de conexión! Revisa que Spring Boot esté encendido en el puerto 8080.");
+        const modal = document.getElementById("modal-editar");
+        modal.classList.remove("hidden");
+        modal.style.display = "flex";
     }
 }
-// --- CERRAR EL MODAL ---
-function cerrarModal() {
-    document.getElementById("modal-editar").style.display = "none";
-}
 
-// --- ACTUALIZAR PRODUCTO (Desde la ventana emergente) ---
+// --- ACTUALIZAR (PUT) ---
 async function actualizarProductoDesdeModal(event) {
     event.preventDefault();
-
     const id = document.getElementById("edit_id_producto").value;
-    const productoActualizado = {
+    const producto = {
         nombre: document.getElementById("edit_nombre").value,
         marca: document.getElementById("edit_marca").value,
         categoria: document.getElementById("edit_categoria").value,
@@ -135,50 +126,28 @@ async function actualizarProductoDesdeModal(event) {
         descripcion: document.getElementById("edit_descripcion").value
     };
 
-    try {
-        const res = await fetch(`${URL}/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(productoActualizado)
-        });
+    const res = await fetch(`${URL}/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(producto)
+    });
 
-        if (res.ok) {
-            cerrarModal(); // Cierra la ventana emergente
-            cargarProductos(); // Refresca la tabla
-            alert("¡Producto actualizado con éxito!");
-        } else {
-            alert("Error al actualizar el producto");
-        }
-    } catch (error) {
-        console.error("Error en la petición:", error);
+    if (res.ok) {
+        cerrarModal();
+        cargarProductos();
+        alert("¡Actualizado!");
     }
 }
 
-// --- ELIMINAR PRODUCTO ---
+function cerrarModal() {
+    const modal = document.getElementById("modal-editar");
+    modal.classList.add("hidden");
+    modal.style.display = "none";
+}
+
 async function eliminarProd(id) {
-    if (confirm("¿Estás seguro de que deseas eliminar este producto?")) {
-        try {
-            const res = await fetch(`${URL}/${id}`, {
-                method: 'DELETE'
-            });
-
-            if (res.ok) {
-                cargarProductos();
-            } else {
-                alert("Error al eliminar el producto");
-            }
-        } catch (error) {
-            console.error("Error en la petición:", error);
-        }
+    if (confirm("¿Eliminar?")) {
+        await fetch(`${URL}/${id}`, { method: 'DELETE' });
+        cargarProductos();
     }
 }
-
-// --- LIMPIAR FORMULARIO PRINCIPAL ---
-function limpiarFormulario() {
-    document.getElementById("form-producto").reset();
-}
-
-
-// Agrega esto justo debajo de donde cambias el título a "Editar Producto"
-document.getElementById("nombre").focus(); // Pone el cursor en el nombre
-window.scrollTo({ top: 0, behavior: 'smooth' }); // Sube la pantalla suavemente

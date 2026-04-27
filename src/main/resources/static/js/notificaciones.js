@@ -77,22 +77,29 @@ async function cargarNotificacionesGlobales() {
     }
 }
 
-// Generador visual de los avisos
-function agregarAvisoNavbar(contenedor, mensaje, tipo, iconoClass) {
-    const color = tipo === 'danger' ? '#ef4444' : '#f59e0b';
-    const bg = tipo === 'danger' ? '#fef2f2' : '#fffbeb';
+function agregarAvisoNavbar(contenedor, mensaje, tipo, icono) {
+    // Colores según el diseño "Elite"
+    const color = tipo === 'danger' ? '#ba1a1a' : '#735c00'; // error y secondary de tu config
+    const bg = tipo === 'danger' ? '#fff1f0' : '#fffbeb';
+    const borderColor = tipo === 'danger' ? '#ffdad6' : '#ffe088';
 
     const item = document.createElement('div');
+    item.className = "flex items-start gap-3 p-3 mb-2 rounded-xl border transition-all hover:shadow-sm";
     item.style.cssText = `
-        display: flex; align-items: flex-start; gap: 12px; padding: 12px; 
-        margin-bottom: 8px; border-radius: 8px; background: ${bg}; 
-        border-left: 3px solid ${color}; transition: 0.2s;
+        background: ${bg}; 
+        border-color: ${borderColor};
     `;
+
     item.innerHTML = `
-        <i class="ph-bold ${iconoClass}" style="font-size: 1.4rem; color: ${color}; margin-top: 2px;"></i>
+        <span class="material-symbols-outlined" style="font-size: 20px; color: ${color};">
+            ${tipo === 'danger' ? 'warning' : 'info'}
+        </span>
         <div style="flex: 1;">
-            <p style="margin: 0; font-size: 12px; color: #334155; line-height: 1.4;">${mensaje}</p>
+            <p style="margin: 0; font-size: 11px; font-weight: 500; color: #1b1c1c; line-height: 1.4;">
+                ${mensaje}
+            </p>
         </div>
     `;
     contenedor.appendChild(item);
 }
+
