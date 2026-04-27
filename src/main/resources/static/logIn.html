@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Abarrotes Elite | Gestión</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-container": "#838484",
+                      "background": "#fbf9f9",
+                      "on-tertiary-fixed-variant": "#454747",
+                      "secondary-fixed-dim": "#e9c349",
+                      "outline": "#747878",
+                      "inverse-primary": "#c8c6c5",
+                      "on-secondary-fixed": "#241a00",
+                      "surface-container-high": "#e9e8e7",
+                      "on-primary-container": "#858383",
+                      "on-surface": "#1b1c1c",
+                      "on-secondary-fixed-variant": "#574500",
+                      "primary": "#000000",
+                      "on-primary": "#ffffff",
+                      "tertiary-fixed-dim": "#c6c6c7",
+                      "on-background": "#1b1c1c",
+                      "on-secondary-container": "#745c00",
+                      "primary-fixed": "#e5e2e1",
+                      "on-primary-fixed": "#1c1b1b",
+                      "error-container": "#ffdad6",
+                      "inverse-on-surface": "#f2f0f0",
+                      "surface-container-highest": "#e3e2e2",
+                      "on-error-container": "#93000a",
+                      "on-surface-variant": "#444748",
+                      "primary-container": "#1c1b1b",
+                      "primary-fixed-dim": "#c8c6c5",
+                      "surface-container": "#efeded",
+                      "on-error": "#ffffff",
+                      "secondary-fixed": "#ffe088",
+                      "tertiary-container": "#1a1c1c",
+                      "on-tertiary": "#ffffff",
+                      "tertiary": "#000000",
+                      "secondary-container": "#fed65b",
+                      "surface-dim": "#dbdad9",
+                      "surface-variant": "#e3e2e2",
+                      "surface-tint": "#5f5e5e",
+                      "surface": "#fbf9f9",
+                      "surface-container-low": "#f5f3f3",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary-fixed-variant": "#474646",
+                      "on-tertiary-fixed": "#1a1c1c",
+                      "surface-bright": "#fbf9f9",
+                      "outline-variant": "#c4c7c7",
+                      "secondary": "#735c00",
+                      "on-secondary": "#ffffff",
+                      "inverse-surface": "#303031",
+                      "error": "#ba1a1a",
+                      "tertiary-fixed": "#e2e2e2"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "container-margin": "40px",
+                      "card-padding": "32px",
+                      "base": "8px"
+              },
+              "fontFamily": {
+                      "body-md": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "label-sm": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "display-xl": ["Inter"]
+              },
+              "fontSize": {
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "display-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .text-gold-accent { color: #D4AF37; }
+        .bg-gold-accent { color: #D4AF37; }
+        .border-gold-accent { border-color: #D4AF37; }
+        .bg-charcoal { background-color: #121212; }
+    </style>
+</head>
+<body class="bg-background font-body-md text-on-background min-h-screen flex flex-col md:flex-row overflow-hidden">
+<!-- Brand Side (Visual Impact) -->
+<div class="hidden md:flex md:w-1/2 bg-charcoal relative items-center justify-center overflow-hidden">
+<div class="absolute inset-0 opacity-40">
+<img alt="High-end grocery products aesthetically arranged on a dark wooden surface" class="w-full h-full object-cover" data-alt="High-quality, professional photography of various high-end grocery products, including fresh organic vegetables, gourmet oils, and premium packaged goods, arranged aesthetically on a dark wooden surface with soft, dramatic lighting, luxury atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBc7Jig9TvXiQraiRJnqdq1C_FSqhp_DuqacyB-NK4h9wCUX_4-t_rvMgohKeanT6wlnsQGgxK5LFRL5i2dWJ-T5Ohx3QdJw3TZQgrgb1_Yb7bGdCDo_2HPQYcNrTwkZ3kFCq87Fa1pt767waBRZ4OYfsLTQYRB6xJA1unPfewx3xiNfSr8kbPE9XAOjWOa5PLRbRqn_f4obVKHAA3I-r6ic_pUmQ8aefbraqYZ0fLwFBDWMc6gdzjVX2G7jNGgfjgGnISoKO7ChFI"/>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
+<div class="relative z-10 p-container-margin max-w-xl">
+<span class="material-symbols-outlined text-6xl mb-6 text-gold-accent" data-icon="diamond">diamond</span>
+<h1 class="font-display-xl text-white mb-4 leading-tight">Abarrotes Elite</h1>
+<p class="font-body-lg text-neutral-400">Transformando la logística de alta gama en una experiencia de gestión impecable y sofisticada.</p>
+<div class="mt-12 space-y-4">
+<div class="flex items-center gap-4 text-white/80">
+<span class="material-symbols-outlined text-gold-accent" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-sm uppercase tracking-widest">Inventario de Precisión</span>
+</div>
+<div class="flex items-center gap-4 text-white/80">
+<span class="material-symbols-outlined text-gold-accent" data-icon="monitoring">monitoring</span>
+<span class="font-label-sm uppercase tracking-widest">Analítica Predictiva</span>
+</div>
+<div class="flex items-center gap-4 text-white/80">
+<span class="material-symbols-outlined text-gold-accent" data-icon="verified">verified</span>
+<span class="font-label-sm uppercase tracking-widest">Estándar Ejecutivo</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Login Form Side -->
+<div class="w-full md:w-1/2 flex items-center justify-center p-base sm:p-container-margin bg-surface">
+<div class="w-full max-w-[480px] bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] p-card-padding border border-surface-container">
+<!-- Header -->
+<div class="text-center mb-10">
+<div class="md:hidden flex justify-center mb-6">
+<span class="material-symbols-outlined text-4xl text-gold-accent" data-icon="diamond">diamond</span>
+</div>
+<h2 class="font-headline-lg text-primary mb-2">Bienvenido a la Gestión Elite</h2>
+<p class="font-body-md text-on-tertiary-container">Ingrese sus credenciales de acceso ejecutivo.</p>
+</div>
+<!-- Form -->
+<form class="space-y-8">
+<div class="space-y-1 group">
+<label class="font-label-sm text-on-surface-variant uppercase tracking-tighter" for="username">USUARIO</label>
+<div class="relative">
+<input class="w-full py-4 bg-transparent border-b border-outline-variant focus:border-gold-accent focus:ring-0 transition-colors duration-300 font-body-md placeholder-neutral-300" id="username" name="username" placeholder="nombre.ejecutivo" type="text"/>
+<span class="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-on-tertiary-container" data-icon="person">person</span>
+</div>
+</div>
+<div class="space-y-1 group">
+<label class="font-label-sm text-on-surface-variant uppercase tracking-tighter" for="password">CONTRASEÑA</label>
+<div class="relative">
+<input class="w-full py-4 bg-transparent border-b border-outline-variant focus:border-gold-accent focus:ring-0 transition-colors duration-300 font-body-md placeholder-neutral-300" id="password" name="password" placeholder="••••••••••••" type="password"/>
+<span class="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-on-tertiary-container" data-icon="lock">lock</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-2">
+<div class="flex items-center">
+<input class="rounded border-outline-variant text-gold-accent focus:ring-gold-accent h-4 w-4" id="remember" type="checkbox"/>
+<label class="ml-2 font-label-sm text-on-surface-variant" for="remember">Recordarme</label>
+</div>
+<a class="font-label-sm text-gold-accent hover:opacity-80 transition-opacity" href="#">¿Olvidó su contraseña?</a>
+</div>
+<button class="w-full bg-charcoal text-white font-label-sm uppercase tracking-widest py-5 rounded-lg hover:bg-black transition-all active:scale-95 shadow-xl" type="submit">
+                    INICIAR SESIÓN
+                </button>
+</form>
+<!-- Footer -->
+<div class="mt-12 pt-8 border-t border-surface-container flex flex-col items-center gap-4">
+<div class="flex gap-6">
+<button class="flex items-center gap-2 font-label-sm text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="help_outline">help_outline</span>
+                        Soporte
+                    </button>
+<button class="flex items-center gap-2 font-label-sm text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="language">language</span>
+                        Español
+                    </button>
+</div>
+<p class="font-label-sm text-on-tertiary-container mt-4">
+                    © 2024 Abarrotes Elite. Todos los derechos reservados.
+                </p>
+</div>
+</div>
+</div>
+</body></html>
