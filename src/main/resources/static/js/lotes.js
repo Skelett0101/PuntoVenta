@@ -1,177 +1,221 @@
 let lotesCompletos = [];
-let paginaActual = 1;
-const filasPorPagina = 5;
 
 document.addEventListener('DOMContentLoaded', () => {
-    const API_LOTES = "http://localhost:8080/api/lotes";
-    const API_PRODUCTOS = "http://localhost:8080/api/productos";
-    
-    const tablaLotesBody = document.getElementById('tablaLotesBody');
-    const selectProducto = document.getElementById('producto');
-    const formLote = document.querySelector('form');
-
-    // 1. Cargar Productos en el Select
-    fetch(API_PRODUCTOS)
-        .then(res => res.json())
-        .then(productos => {
-            selectProducto.innerHTML = '<option value="">Seleccionar producto...</option>';
-            productos.forEach(p => {
-                // Ajustado a 'nombre_producto' según tu log de Hibernate
-                const nombre = p.nombre_producto || p.nombre;
-                selectProducto.innerHTML += `<option value="${p.id_producto}">${nombre} - ${p.marca}</option>`;
-            });
-        });
-
-    // =========================================================
-    // NUEVA PARTE: ESCUCHADOR PARA GUARDAR (POST)
-    // =========================================================
-    formLote.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        // Creamos el objeto exactamente como lo espera tu Map<String, Object> en Java
-        const nuevoLote = {
-            id_producto: parseInt(selectProducto.value),
-            codigo_lote: document.getElementById('codigo_lote').value,
-            fecha_ingreso: document.getElementById('fecha_ingreso').value,
-            fecha_caducidad: document.getElementById('fecha_caducidad').value,
-            stock_lote: parseInt(document.getElementById('stock_lote').value)
-        };
-
-        try {
-            const response = await fetch(API_LOTES, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(nuevoLote)
-            });
-
-            if (response.ok) {
-                alert("✅ Lote registrado con éxito");
-                formLote.reset(); // Limpia el formulario
-                cargarLotes();    // Refresca la tabla automáticamente
-            } else {
-                const errorMsg = await response.text();
-                alert("❌ Error: " + errorMsg);
-            }
-        } catch (error) {
-            console.error("Error de conexión:", error);
-            alert("No se pudo conectar con el servidor.");
-        }
-    });
-    // =========================================================
-
-    // 2. Cargar Lotes
-    window.cargarLotes = function() {
-        fetch(API_LOTES)
-            .then(res => res.json())
-            .then(data => {
-                lotesCompletos = data;
-                renderizarTabla();
-            });
-    }
-
-    // 3. Dibujar Tabla con diseño Premium
-    window.renderizarTabla = function() {
-        if (!tablaLotesBody) return;
-        tablaLotesBody.innerHTML = "";
-
-        const inicio = (paginaActual - 1) * filasPorPagina;
-        const fin = inicio + filasPorPagina;
-        const visibles = lotesCompletos.slice(inicio, fin);
-
-        visibles.forEach(l => {
-            // Manejo de nombres de campos según vengan del backend (camelCase o snake_case)
-            const fCad = l.fechaCaducidad || l.fecha_caducidad;
-            const fIng = l.fechaIngreso || l.fecha_ingreso;
-            const stock = l.stockLote || l.stock_lote;
-            const cod = l.codigoLote || l.codigo_lote;
-            const id = l.idLote || l.id_lote;
-
-            const fecha = new Date(fCad + "T00:00:00");
-            const fechaFormateada = fecha.toLocaleDateString('es-ES', { day:'2-digit', month:'short', year:'numeric' }).toUpperCase();
-            
-            const hoy = new Date();
-            const dif = (fecha - hoy) / (1000 * 60 * 60 * 24);
-            let pillClase = "bg-neutral-100 text-neutral-600 border-neutral-200";
-            
-            if (dif < 0) pillClase = "bg-error-container text-on-error-container";
-            else if (dif < 15) pillClase = "bg-secondary-container text-on-secondary-container";
-
-            const loteData = btoa(JSON.stringify(l));
-
-            tablaLotesBody.innerHTML += `
-                <tr class="hover:bg-neutral-50 transition-colors group">
-                    <td class="py-6 px-2">
-                        <div class="flex items-center gap-3">
-                            <div class="flex flex-col">
-                                <span class="font-semibold text-primary">${l.producto.nombre_producto || l.producto.nombre}</span>
-                                <small class="text-neutral-500">${l.producto.marca}</small>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="py-6 px-2 font-mono text-sm text-outline">${cod}</td>
-                    <td class="py-6 px-2">
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold border ${pillClase}">${fechaFormateada}</span>
-                    </td>
-                    <td class="py-6 px-2 font-semibold">${stock.toLocaleString()} uds</td>
-                    <td class="py-6 px-2 text-right">
-                        <div class="flex justify-end gap-2">
-                            <button onclick="prepararEdicion('${loteData}')" class="text-outline hover:text-secondary transition-colors">
-                                <span class="material-symbols-outlined">edit_square</span>
-                            </button>
-                            <button onclick="eliminarLote(${id})" class="text-outline hover:text-error transition-colors">
-                                <span class="material-symbols-outlined">delete</span>
-                            </button>
-                        </div>
-                    </td>
-                </tr>`;
-        });
-        actualizarPaginacion();
-    };
-
-    // Función para eliminar
-    window.eliminarLote = async function(id) {
-        if(confirm("¿Seguro que deseas eliminar este lote?")) {
-            const res = await fetch(`${API_LOTES}/${id}`, { method: 'DELETE' });
-            if(res.ok) cargarLotes();
-        }
-    }
-
-    // Función para autocompletar al editar
-    window.prepararEdicion = function(base64) {
-        const lote = JSON.parse(atob(base64));
-        const fCad = lote.fechaCaducidad || lote.fecha_caducidad;
-        const fIng = lote.fechaIngreso || lote.fecha_ingreso;
-        const stock = lote.stockLote || lote.stock_lote;
-        const cod = lote.codigoLote || lote.codigo_lote;
-
-        document.getElementById('producto').value = lote.producto.id_producto;
-        document.getElementById('codigo_lote').value = cod;
-        document.getElementById('fecha_ingreso').value = fIng;
-        document.getElementById('fecha_caducidad').value = fCad;
-        document.getElementById('stock_lote').value = stock;
-        
-        const btn = document.querySelector('form button[type="submit"]');
-        btn.innerHTML = "Actualizar Entrada";
-        btn.classList.replace('bg-primary', 'bg-secondary');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
-
+    cargarProductosSelect();
     cargarLotes();
-});
 
-// Función de búsqueda
-document.addEventListener('keyup', (e) => {
-    if (e.target.id === 'buscador-lote') {
-        const texto = e.target.value.toLowerCase();
-        const filas = document.querySelectorAll('#tablaLotesBody tr');
-        filas.forEach(f => {
-            const contenido = f.innerText.toLowerCase();
-            f.style.display = contenido.includes(texto) ? '' : 'none';
-        });
+    // Evento para guardar Lote (POST)
+    const formLote = document.querySelector('form');
+    if (formLote) {
+        formLote.addEventListener('submit', guardarLote);
     }
+
+    // Filtros de búsqueda
+    const buscador = document.getElementById('buscador-lote');
+    if (buscador) buscador.addEventListener('input', filtrarTabla);
+
+    const filtroFecha = document.getElementById('filtro-fecha');
+    if (filtroFecha) filtroFecha.addEventListener('change', filtrarTabla);
 });
 
-function actualizarPaginacion() {
-    const info = document.querySelector(".mt-auto p");
-    if (info) info.textContent = `Mostrando ${lotesCompletos.length} lotes registrados`;
+// ==========================================
+// 1. CARGAR PRODUCTOS EN EL SELECT
+// ==========================================
+async function cargarProductosSelect() {
+    try {
+        const res = await fetch("http://localhost:8080/api/productos");
+        const productos = await res.json();
+        const select = document.getElementById('producto');
+        
+        if (!select) return;
+        
+        select.innerHTML = '<option value="">Seleccionar producto...</option>';
+        productos.forEach(p => {
+            const nombre = p.nombre_producto || p.nombre || "Sin Nombre";
+            const marca = p.marca || "S/M";
+            const id = p.id_producto || p.idProducto; 
+            
+            select.innerHTML += `<option value="${id}">${nombre} (${marca})</option>`;
+        });
+    } catch (e) {
+        console.error("Error al cargar productos:", e);
+    }
 }
+
+// ==========================================
+// 2. CARGAR Y DIBUJAR LOS LOTES EN LA TABLA
+// ==========================================
+window.cargarLotes = async function() {
+    try {
+        const res = await fetch("http://localhost:8080/api/lotes");
+        lotesCompletos = await res.json();
+        renderizarTabla(lotesCompletos);
+    } catch (e) {
+        console.error("Error cargando lotes:", e);
+    }
+}
+
+window.renderizarTabla = function(listaLotes) {
+    const tbody = document.getElementById('tablaLotesBody');
+    if (!tbody) return;
+
+    tbody.innerHTML = "";
+    
+    const datos = listaLotes || lotesCompletos;
+
+    if (datos.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="py-10 text-center text-neutral-400 italic">No hay lotes registrados o coincidiendo con la búsqueda.</td></tr>`;
+        return;
+    }
+
+    datos.forEach(lote => {
+        const idLote = lote.idLote || lote.id_lote;
+        const codLote = lote.codigoLote || lote.codigo_lote || "S/C";
+        const stock = lote.stockLote || lote.stock_lote || 0;
+        const fechaCad = lote.fechaCaducidad || lote.fecha_caducidad;
+        
+        const producto = lote.producto || {};
+        const nombreProd = producto.nombre_producto || producto.nombre || "Desconocido";
+        const marcaProd = producto.marca || "Generico";
+
+        // Formateo de Fecha
+        const fechaObj = new Date(fechaCad + "T00:00:00");
+        const caducidadStr = fechaObj.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase();
+
+        // Lógica de colores para Vencimiento
+        const hoy = new Date();
+        const difDias = Math.ceil((fechaObj - hoy) / (1000 * 60 * 60 * 24));
+        
+        let pillClass = "bg-surface-container-high text-on-surface-variant border border-outline-variant/50";
+        if (difDias <= 0) {
+            pillClass = "bg-error-container text-on-error-container border border-error/20 font-black";
+        } else if (difDias <= 15) {
+            pillClass = "bg-secondary-container text-on-secondary-container border border-secondary/20 font-bold";
+        }
+
+        const tr = document.createElement('tr');
+        tr.className = "border-b border-neutral-50 hover:bg-neutral-50/50 transition-colors";
+        
+        tr.innerHTML = `
+            <td class="py-4 px-2">
+                <div class="flex flex-col">
+                    <span class="text-sm font-bold text-neutral-900">${nombreProd}</span>
+                    <span class="text-[11px] text-neutral-400">${marcaProd}</span>
+                </div>
+            </td>
+            <td class="py-4 px-2">
+                <span class="font-mono text-[11px] tracking-wider text-neutral-500 bg-surface-container-high px-2 py-1 rounded-md border border-neutral-200">
+                    ${codLote}
+                </span>
+            </td>
+            <td class="py-4 px-2">
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-semibold ${pillClass}">
+                    ${caducidadStr}
+                </span>
+            </td>
+            <td class="py-4 px-2">
+                <span class="text-sm font-bold text-neutral-900">${stock} uds</span>
+            </td>
+            <td class="py-4 px-2 text-right">
+                <div class="flex justify-end gap-2">
+                    <button onclick="eliminarLote(${idLote})" class="p-1.5 text-neutral-400 hover:text-error hover:bg-error-container/50 rounded-lg transition-all" title="Eliminar Lote">
+                        <span class="material-symbols-outlined text-[20px]">delete</span>
+                    </button>
+                </div>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+// ==========================================
+// 3. REGISTRAR UN NUEVO LOTE (POST)
+// ==========================================
+async function guardarLote(e) {
+    e.preventDefault();
+
+    const idProductoSelect = document.getElementById('producto').value;
+    if (!idProductoSelect) {
+        if(typeof mostrarToast === 'function') mostrarToast("Debes seleccionar un producto", "warning");
+        return;
+    }
+
+    // PAYLOAD UNIVERSAL
+    const payload = {
+        id_producto: parseInt(idProductoSelect),
+        codigo_lote: document.getElementById('codigo_lote').value.trim(),
+        fecha_ingreso: document.getElementById('fecha_ingreso').value,
+        fecha_caducidad: document.getElementById('fecha_caducidad').value,
+        stock_lote: parseInt(document.getElementById('stock_lote').value),
+
+        producto: { id_producto: parseInt(idProductoSelect), idProducto: parseInt(idProductoSelect) }, 
+        codigoLote: document.getElementById('codigo_lote').value.trim(),
+        fechaIngreso: document.getElementById('fecha_ingreso').value,
+        fechaCaducidad: document.getElementById('fecha_caducidad').value,
+        stockLote: parseInt(document.getElementById('stock_lote').value)
+    };
+
+    try {
+        const response = await fetch("http://localhost:8080/api/lotes", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+            if(typeof mostrarToast === 'function') mostrarToast("Lote registrado con éxito", "success");
+            document.querySelector('form').reset();
+            cargarLotes(); 
+            if(typeof cargarNotificacionesGlobales === 'function') cargarNotificacionesGlobales();
+        } else {
+            const errorTxt = await response.text();
+            if(typeof mostrarToast === 'function') mostrarToast("Error al registrar: " + errorTxt, "error");
+        }
+    } catch (e) {
+        console.error("Error:", e);
+    }
+}
+
+// ==========================================
+// 4. ELIMINAR LOTE (DELETE)
+// ==========================================
+window.eliminarLote = async function(idLote) {
+    if (confirm("¿Estás seguro de que deseas eliminar este lote del sistema?")) {
+        try {
+            const res = await fetch(`http://localhost:8080/api/lotes/${idLote}`, {
+                method: 'DELETE'
+            });
+
+            if (res.ok) {
+                if(typeof mostrarToast === 'function') mostrarToast("Lote eliminado", "success");
+                cargarLotes();
+                if(typeof cargarNotificacionesGlobales === 'function') cargarNotificacionesGlobales();
+            } else {
+                if(typeof mostrarToast === 'function') mostrarToast("No se pudo eliminar el lote", "error");
+            }
+        } catch (e) {
+            console.error("Error al eliminar:", e);
+        }
+    }
+};
+
+// ==========================================
+// 5. BUSCADOR Y FILTRO DE FECHAS
+// ==========================================
+window.filtrarTabla = function() {
+    const textoBuscador = document.getElementById('buscador-lote')?.value.toLowerCase() || "";
+    const fechaFiltro = document.getElementById('filtro-fecha')?.value || "";
+
+    const lotesFiltrados = lotesCompletos.filter(l => {
+        const nombre = (l.producto?.nombre_producto || l.producto?.nombre || "").toLowerCase();
+        const codigo = (l.codigoLote || l.codigo_lote || "").toLowerCase();
+        const caducidad = l.fechaCaducidad || l.fecha_caducidad || "";
+
+        const pasaTexto = nombre.includes(textoBuscador) || codigo.includes(textoBuscador);
+        const pasaFecha = fechaFiltro === "" || caducidad === fechaFiltro;
+
+        return pasaTexto && pasaFecha;
+    });
+
+    renderizarTabla(lotesFiltrados);
+};

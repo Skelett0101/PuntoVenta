@@ -124,52 +124,58 @@
 
 <body class="font-body-md text-on-surface selection:bg-secondary-fixed">
     <!-- MENU SUPERIOR -->
-    <header
-        class="sticky top-0 w-full bg-white/80 backdrop-blur-xl z-40 border-b border-neutral-100 shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
-        <div class="flex items-center justify-between px-10 h-20 w-full max-w-[1440px] mx-auto">
-            <div class="flex items-center gap-12">
-                <div class="flex flex-col">
-                    <h1 class="text-neutral-900 font-black uppercase tracking-widest text-sm">Abarrotes Monrroy</h1>
-                    <p class="text-[#D4AF37] text-[8px] uppercase tracking-[0.2em] font-bold">Gestión Premium</p>
-                </div>
-                <div class="flex items-center gap-8">
-                    <div class="relative flex items-center">
-                        <span class="material-symbols-outlined absolute left-3 text-neutral-400">search</span>
-                        <input id="buscador-producto" onkeyup="buscarProducto()"
-                            class="pl-10 pr-4 py-2 w-72 bg-neutral-50 border-none rounded-full focus:ring-1 focus:ring-[#D4AF37] text-sm transition-all"
-                            placeholder="Buscar en inventario..." type="text" />
-                    </div>
-                    <!-------------------------MENU SUPERIOR PAGINAS ADJUNTAS----------------------------------->
-                    <nav class="hidden md:flex gap-6">
-                        <a class="text-neutral-500 hover:text-neutral-800 transition-colors text-sm"
-                            href="Index2.html">Inicio</a>
-                        <a class="text-neutral-500 hover:text-neutral-800 transition-colors text-sm"
-                            href="Ventas2.html">Ventas</a>
-                        <a class="text-neutral-500 hover:text-neutral-800 transition-colors text-sm"
-                            href="lotes2.html">Lotes</a>
-                        <a class="text-neutral-900 border-b-2 border-[#D4AF37] pb-1 font-semibold text-sm"
-                            href="Productos2.html">Productos</a>
-                    </nav>
-                    <!-------------------------------------------------------------------------->
-                </div>
-            </div>
-            <div class="flex items-center gap-6">
-                <button class="relative p-2 rounded-full hover:bg-neutral-50 transition-all active:scale-95">
-                    <span class="material-symbols-outlined text-neutral-700"
-                        data-icon="notifications">notifications</span>
-                    <span class="absolute top-2 right-2 w-2 h-2 bg-[#D4AF37] rounded-full border-2 border-white"></span>
-                </button>
-                <div class="flex items-center gap-3 pl-4 border-l border-neutral-100">
-                    <div class="text-right">
-                        <p class="text-xs font-bold text-neutral-900 leading-none">Ejecutivo Elite</p>
-                        <p class="text-[10px] text-neutral-400 uppercase tracking-tighter mt-1">Administrador</p>
-                    </div>
-                    <img alt="Perfil de Ejecutivo" class="w-10 h-10 rounded-full border-2 border-[#D4AF37] object-cover"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDj_S66IWtvjUqRBAzdY6eTnj5rNKZlxf8jiLfwraCRKI37o8YtmATq39o4aP12jHzenAUTD6ioTt4xULuCywdiKuXG6star3JYe1XsmT_KiMHYvUQ9eztsVyhX_mw2wKLUz9M4fMU2rGEoP6dWFcNgYW6ffzpRYrjfvzoL3ec40Q4Hu3gDI_IsmU-R561druhhIRCpm_U02uZwKXNEcZb4WDDRx4XFjeLX8HQ_izxAgwRdDl6qAFwOWALg5Sv9cbNsqasKSUHGUhg" />
-                </div>
-            </div>
-        </div>
-    </header>
+	<header class="sticky top-0 w-full bg-white/80 backdrop-blur-xl z-40 border-b border-neutral-100 shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+	    <div class="flex items-center justify-between px-10 h-20 w-full max-w-[1440px] mx-auto">
+	        <div class="flex items-center gap-12">
+	            <div class="flex flex-col">
+	                <h1 class="text-neutral-900 font-black uppercase tracking-widest text-sm">Abarrotes Monrroy</h1>
+	                <p class="text-[#D4AF37] text-[8px] uppercase tracking-[0.2em] font-bold">Gestión Premium</p>
+	            </div>
+	            <div class="flex items-center gap-8">
+	                <nav class="hidden md:flex gap-6">
+	                    <a class="text-neutral-900 border-b-2 border-[#D4AF37] pb-1 font-semibold text-sm" href="Index2.html">Inicio</a>
+	                    <a class="text-neutral-500 hover:text-neutral-800 transition-colors text-sm" href="Ventas2.html">Ventas</a>
+	                    <a class="text-neutral-500 hover:text-neutral-800 transition-colors text-sm" href="lotes2.html">Lotes</a>
+	                    <a class="text-neutral-500 hover:text-neutral-800 transition-colors text-sm" href="Productos2.html">Productos</a>
+	                </nav>
+	            </div>
+	        </div>
+
+	        <div class="flex items-center gap-2">
+	            <div class="relative nav-notifications"> 
+	                <button onclick="toggleNotificacionesGlobales()" class="relative p-2 rounded-full hover:bg-neutral-50 transition-all active:scale-95 mr-2">
+	                    <span class="material-symbols-outlined text-neutral-700 pointer-events-none">notifications</span>
+	                    <span id="global-notif-badge" class="absolute top-2 right-2 w-4 h-4 bg-[#D4AF37] text-white text-[10px] font-bold rounded-full border-2 border-white flex items-center justify-center pointer-events-none" style="display: none;">0</span>
+	                </button>
+	                <div id="global-notif-dropdown" class="absolute right-0 mt-3 w-80 bg-white/95 backdrop-blur-xl border border-neutral-100 shadow-[0_10px_40px_rgba(0,0,0,0.1)] rounded-2xl overflow-hidden z-50 hidden transition-all">
+	                    <div class="p-4 border-b border-neutral-50 flex justify-between items-center bg-neutral-50/50">
+	                        <h3 class="text-[11px] font-black uppercase tracking-widest text-neutral-500">Notificaciones</h3>
+	                    </div>
+	                    <div id="global-notif-list" class="max-h-[400px] overflow-y-auto p-4 custom-scrollbar">
+	                        <p class="text-[12px] text-neutral-400 text-center py-4">Cargando alertas...</p>
+	                    </div>
+	                </div>
+	            </div>
+
+	            <div class="relative" id="userProfileWrapper">
+	                <div onclick="toggleProfileMenu()" class="flex items-center gap-3 pl-4 border-l border-neutral-200 cursor-pointer hover:opacity-80 transition-opacity">
+	                    <div class="text-right">
+	                        <p id="displayNombre" class="text-xs font-bold text-neutral-900 leading-none">Cargando...</p>
+	                        <p id="displayRol" class="text-[10px] text-neutral-400 uppercase tracking-tighter mt-1">...</p>
+	                    </div>
+	                    <img id="displayAvatar" alt="Perfil" class="w-10 h-10 rounded-full border-2 border-[#D4AF37] object-cover bg-neutral-900 shadow-sm" src="https://ui-avatars.com/api/?name=U&background=121212&color=D4AF37&bold=true" />
+	                </div>
+	                <div id="profileDropdown" class="absolute right-0 mt-4 w-48 bg-white border border-neutral-100 shadow-[0_10px_40px_rgba(0,0,0,0.1)] rounded-xl overflow-hidden z-50 hidden">
+	                    <button onclick="cerrarSesion()" class="w-full text-left px-4 py-3 text-sm font-bold text-red-600 hover:bg-red-50 flex items-center gap-2 transition-colors">
+	                        <span class="material-symbols-outlined text-[18px]">logout</span>
+	                        Cerrar Sesión
+	                    </button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</header>
+	
     <main class="pt-24 pb-16 px-10 max-w-[1440px] mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
             <section class="lg:col-span-5">
